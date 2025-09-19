@@ -56,3 +56,8 @@ group :development do
   gem "web-console"
   gem "byebug"
 end
+
+gem "dartsass-rails"
+gem "bootstrap", "~> 5.3.3"
+
+gem "pg_search"

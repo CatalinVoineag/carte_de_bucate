@@ -1,0 +1,31 @@
+<div id="<%= dom_id receipe %>">
+  <p>
+    <strong>Name:</strong>
+    <%= receipe.name %>
+  </p>
+
+  <p>
+    <strong>Description:</strong>
+    <%= receipe.description %>
+  </p>
+
+  <p>
+    <strong>Instructions:</strong>
+    <%= receipe.instructions %>
+  </p>
+
+  <p>
+    <strong>Ingredients:</strong>
+  </p>
+
+  <% receipe.ingredients.each do |ingredient| %>
+    <p><%= "#{ingredient.quantity}x #{ingredient.name}" %>
+  <% end %> 
+
+</div>
+
+  <tr>
+    <td><%= receipe.name %></td>
+    <td><%= receipe.description %></td>
+    <td><%= receipe.ingredients %></td>
+  </tr>

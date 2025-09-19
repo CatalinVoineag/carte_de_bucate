@@ -1,0 +1,31 @@
+<p style="color: green"><%= notice %></p>
+
+<% content_for :title, "Receipes" %>
+
+<h1>Receipes</h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Description</th>
+      <th scope="col">Ingredients</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @receipes.each do |receipe| %>
+      <tr>
+        <th scope="row"><%= link_to receipe.name, receipe %></th>
+        <th scope="row"><%= receipe.description%></th>
+
+        <th scope="row">
+          <% receipe.ingredients.each do |ingredient| %>
+            <%= "#{ingredient.quantity}x #{ingredient.name}" %>
+          <% end %> 
+        </th>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to "New receipe", new_receipe_path %>
