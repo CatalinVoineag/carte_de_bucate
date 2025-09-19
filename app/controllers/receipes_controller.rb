@@ -3,7 +3,13 @@ class ReceipesController < ApplicationController
 
   # GET /receipes or /receipes.json
   def index
-    @receipes = Receipe.all.order(created_at: :desc)
+    @search_query = params[:query]
+
+    if @search_query.present?
+      @receipes = Receipe.search_by_name(@search_query).order(created_at: :desc)
+    else
+      @receipes = Receipe.all.order(created_at: :desc)
+    end
   end
 
   # GET /receipes/1 or /receipes/1.json

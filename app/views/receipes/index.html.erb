@@ -4,6 +4,10 @@
 
 <h1>Receipes</h1>
 
+<%= form_with method: :get do |form| %> 
+  <%= form.search_field :query, placeholder: "Search", value: @search_query %> 
+<% end %> 
+
 <table class="table">
   <thead>
     <tr>
