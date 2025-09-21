@@ -1,2 +1,10 @@
 // Sassy
 @import "bootstrap";
+
+.field_with_errors label {
+  color: red;  
+}
+
+.field_with_errors input, textarea {
+  border: 2px solid red; 
+}

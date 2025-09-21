@@ -37,8 +37,8 @@ class ReceipesController < ApplicationController
         format.html { redirect_to receipe_path(@receipe), notice: "Receipe was successfully created." }
         format.json { render :show, status: :created, location: @receipe }
       else
-        if @receipe.receipe_ingredients.blank?
-          @receipe.receipe_ingredients.build.build_ingredient
+        @receipe.receipe_ingredients.each do |receipe_ingredient|
+          receipe_ingredient.build_ingredient if receipe_ingredient.ingredient.blank?
         end
 
         format.html { render :new, status: :unprocessable_entity }

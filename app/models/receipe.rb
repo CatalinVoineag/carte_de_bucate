@@ -10,10 +10,6 @@ class Receipe < ApplicationRecord
   validates :name, presence: true
   validates :description, presence: true
   validates :instructions, presence: true
-  validates :receipe_ingredients, presence: true
-  #validates_associated :receipe_ingredients, :ingredients
-
-  ## FIX these validations
 
   pg_search_scope :search_by_name, against: :name
 end

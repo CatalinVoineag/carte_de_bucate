@@ -27,10 +27,10 @@
   </div>
 
   Ingredients
-  <%= form.fields_for :receipe_ingredients do |ingredients_form| %>
-    <%= ingredients_form.hidden_field :id %> 
+  <%= form.fields_for :receipe_ingredients do |receipe_ingredient_form| %>
+    <%= receipe_ingredient_form.hidden_field :id %> 
 
-    <%= ingredients_form.fields_for :ingredient do |ingredient_form| %>
+    <%= receipe_ingredient_form.fields_for :ingredient do |ingredient_form| %>
       <%= ingredient_form.hidden_field :id %> 
 
       <div>
@@ -40,13 +40,13 @@
     <% end %> 
 
     <div>
-      <%= ingredients_form.label :quantity, style: "display: block" %>
-      <%= ingredients_form.number_field :quantity %>
+      <%= receipe_ingredient_form.label :quantity, style: "display: block" %>
+      <%= receipe_ingredient_form.number_field :quantity %>
     </div>
 
     <div>
-      <%= ingredients_form.label :grams, style: "display: block" %>
-      <%= ingredients_form.number_field :grams %>
+      <%= receipe_ingredient_form.label :grams, style: "display: block" %>
+      <%= receipe_ingredient_form.number_field :grams %>
     </div>
   <% end %> 
 
