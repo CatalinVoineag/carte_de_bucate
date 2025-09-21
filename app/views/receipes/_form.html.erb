@@ -1,4 +1,9 @@
-<%= form_with model: receipe, url:, method: do |form| %>
+<%= form_with(
+  model: receipe,
+  url:,
+  method:,
+  data: { controller: 'nested-form', nested_form_wrapper_selector_value: '.nested-form-wrapper' },
+) do |form| %>
   <% if receipe.errors.any? %>
     <div style="color: red">
       <h2><%= pluralize(receipe.errors.count, "error") %> prohibited this receipe from being saved:</h2>
@@ -26,30 +31,22 @@
     <%= form.textarea :instructions %>
   </div>
 
-  Ingredients
-  <%= form.fields_for :receipe_ingredients do |receipe_ingredient_form| %>
-    <%= receipe_ingredient_form.hidden_field :id %> 
-
-    <%= receipe_ingredient_form.fields_for :ingredient do |ingredient_form| %>
-      <%= ingredient_form.hidden_field :id %> 
-
-      <div>
-        <%= ingredient_form.label :name, style: "display: block" %>
-        <%= ingredient_form.text_field :name %>
-      </div>
+  <h2>Ingredients</h2>
+  <template data-nested-form-target="template">
+    <%= form.fields_for :receipe_ingredients, ReceipeIngredient.new, child_index: 'NEW_RECORD' do |receipe_ingredient_form| %>
+      <%= render "ingredient", receipe_ingredient_form: receipe_ingredient_form %>
     <% end %> 
+  </template>
 
-    <div>
-      <%= receipe_ingredient_form.label :quantity, style: "display: block" %>
-      <%= receipe_ingredient_form.number_field :quantity %>
-    </div>
+  <%= form.fields_for :receipe_ingredients do |receipe_ingredient_form| %>
+    <%= render "ingredient", receipe_ingredient_form: receipe_ingredient_form %>
+  <% end %>
 
-    <div>
-      <%= receipe_ingredient_form.label :grams, style: "display: block" %>
-      <%= receipe_ingredient_form.number_field :grams %>
-    </div>
-  <% end %> 
+  <div data-nested-form-target="target"></div>
 
+  <button type="button" data-action="nested-form#add">Add ingredient</button>
+
+  <br>
   <div>
     <%= form.submit %>
   </div>
