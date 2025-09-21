@@ -87,6 +87,7 @@ class ReceipesController < ApplicationController
           :id,
           :quantity,
           :grams,
+          :_destroy,
           ingredient_attributes: [ :id, :name ]
         ] ]
       ],

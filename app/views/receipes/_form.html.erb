@@ -2,7 +2,10 @@
   model: receipe,
   url:,
   method:,
-  data: { controller: 'nested-form', nested_form_wrapper_selector_value: '.nested-form-wrapper' },
+  data: {
+    controller: 'nested-form',
+    nested_form_wrapper_selector_value: '.nested-form-wrapper'
+  },
 ) do |form| %>
   <% if receipe.errors.any? %>
     <div style="color: red">
@@ -33,7 +36,9 @@
 
   <h2>Ingredients</h2>
   <template data-nested-form-target="template">
-    <%= form.fields_for :receipe_ingredients, ReceipeIngredient.new, child_index: 'NEW_RECORD' do |receipe_ingredient_form| %>
+    <% record = ReceipeIngredient.new %> 
+    <% record.build_ingredient %> 
+    <%= form.fields_for :receipe_ingredients, record, child_index: 'NEW_RECORD' do |receipe_ingredient_form| %>
       <%= render "ingredient", receipe_ingredient_form: receipe_ingredient_form %>
     <% end %> 
   </template>
