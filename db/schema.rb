@@ -10,17 +10,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_17_180641) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_19_164427) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
   create_table "ingredients", force: :cascade do |t|
     t.string "name"
-    t.integer "quantity"
-    t.bigint "receipe_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["receipe_id"], name: "index_ingredients_on_receipe_id"
+    t.index ["name"], name: "unique_receipe_nams", unique: true
+  end
+
+  create_table "receipe_ingredients", force: :cascade do |t|
+    t.bigint "receipe_id", null: false
+    t.bigint "ingredient_id"
+    t.integer "quantity", null: false
+    t.integer "grams"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["ingredient_id"], name: "index_receipe_ingredients_on_ingredient_id"
+    t.index ["receipe_id"], name: "index_receipe_ingredients_on_receipe_id"
   end
 
   create_table "receipes", force: :cascade do |t|
@@ -31,5 +40,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_17_180641) do
     t.datetime "updated_at", null: false
   end
 
-  add_foreign_key "ingredients", "receipes"
+  add_foreign_key "receipe_ingredients", "ingredients", on_delete: :cascade
+  add_foreign_key "receipe_ingredients", "receipes", on_delete: :cascade
 end

@@ -10,6 +10,8 @@ class ReceipesController < ApplicationController
     else
       @receipes = Receipe.all.order(created_at: :desc)
     end
+
+    @receipes.includes(:ingredients)
   end
 
   # GET /receipes/1 or /receipes/1.json
@@ -19,7 +21,7 @@ class ReceipesController < ApplicationController
   # GET /receipes/new
   def new
     @receipe = Receipe.new
-    @receipe.ingredients.build
+    @receipe.receipe_ingredients.build.build_ingredient
   end
 
   # GET /receipes/1/edit
@@ -32,9 +34,13 @@ class ReceipesController < ApplicationController
 
     respond_to do |format|
       if @receipe.save
-        format.html { redirect_to @receipe, notice: "Receipe was successfully created." }
+        format.html { redirect_to receipe_path(@receipe), notice: "Receipe was successfully created." }
         format.json { render :show, status: :created, location: @receipe }
       else
+        if @receipe.receipe_ingredients.blank?
+          @receipe.receipe_ingredients.build.build_ingredient
+        end
+
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @receipe.errors, status: :unprocessable_entity }
       end
@@ -45,7 +51,7 @@ class ReceipesController < ApplicationController
   def update
     respond_to do |format|
       if @receipe.update(receipe_params)
-        format.html { redirect_to @receipe, notice: "Receipe was successfully updated.", status: :see_other }
+        format.html { redirect_to receipe_path(@receipe), notice: "Receipe was successfully updated.", status: :see_other }
         format.json { render :show, status: :ok, location: @receipe }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -77,7 +83,12 @@ class ReceipesController < ApplicationController
           :name,
           :description,
           :instructions,
-          ingredients_attributes: [ [ :name, :quantity ] ]
+          receipe_ingredients_attributes: [ [
+            :id,
+            :quantity,
+            :grams,
+            ingredient_attributes: [ :id, :name ]
+          ] ]
         ],
       )
     end

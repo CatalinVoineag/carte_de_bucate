@@ -1,10 +1,33 @@
 <p style="color: green"><%= notice %></p>
 
-<%= render @receipe %>
+<div id="<%= dom_id @receipe %>">
+  <p>
+    <strong>Name:</strong>
+    <%= @receipe.name %>
+  </p>
+
+  <p>
+    <strong>Description:</strong>
+    <%= @receipe.description %>
+  </p>
+
+  <p>
+    <strong>Instructions:</strong>
+    <%= @receipe.instructions %>
+  </p>
+
+  <p>
+    <strong>Ingredients:</strong>
+  </p>
+
+  <% @receipe.receipe_ingredients.each do |receipe_ingredient| %>
+    <p><%= "#{receipe_ingredient.quantity}x #{receipe_ingredient.ingredient&.name}" %>
+  <% end %> 
+</div>
 
 <div>
   <%= link_to "Edit this receipe", edit_receipe_path(@receipe) %> |
   <%= link_to "Back to receipes", receipes_path %>
 
-  <%= button_to "Destroy this receipe", @receipe, method: :delete %>
+  <%= button_to "Destroy this receipe", receipe_path(@receipe), method: :delete %>
 </div>

@@ -1,4 +1,4 @@
-<%= form_with(model: receipe) do |form| %>
+<%= form_with model: receipe, url:, method: do |form| %>
   <% if receipe.errors.any? %>
     <div style="color: red">
       <h2><%= pluralize(receipe.errors.count, "error") %> prohibited this receipe from being saved:</h2>
@@ -27,15 +27,26 @@
   </div>
 
   Ingredients
-  <%= form.fields_for :ingredients do |ingredients_form| %>
-    <div>
-      <%= ingredients_form.label :name, style: "display: block" %>
-      <%= ingredients_form.text_field :name %>
-    </div>
+  <%= form.fields_for :receipe_ingredients do |ingredients_form| %>
+    <%= ingredients_form.hidden_field :id %> 
+
+    <%= ingredients_form.fields_for :ingredient do |ingredient_form| %>
+      <%= ingredient_form.hidden_field :id %> 
+
+      <div>
+        <%= ingredient_form.label :name, style: "display: block" %>
+        <%= ingredient_form.text_field :name %>
+      </div>
+    <% end %> 
 
     <div>
       <%= ingredients_form.label :quantity, style: "display: block" %>
       <%= ingredients_form.number_field :quantity %>
+    </div>
+
+    <div>
+      <%= ingredients_form.label :grams, style: "display: block" %>
+      <%= ingredients_form.number_field :grams %>
     </div>
   <% end %> 
 

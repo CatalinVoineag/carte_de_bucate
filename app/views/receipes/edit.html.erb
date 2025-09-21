@@ -2,11 +2,11 @@
 
 <h1>Editing receipe</h1>
 
-<%= render "form", receipe: @receipe %>
+<%= render "form", receipe: @receipe, url: receipe_path(@receipe), method: :put %>
 
 <br>
 
 <div>
-  <%= link_to "Show this receipe", @receipe %> |
+  <%= link_to "Show this receipe", receipe_path(@receipe) %> |
   <%= link_to "Back to receipes", receipes_path %>
 </div>

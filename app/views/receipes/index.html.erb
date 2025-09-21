@@ -2,34 +2,16 @@
 
 <% content_for :title, "Receipes" %>
 
-<h1>Receipes</h1>
+<h1>
+  <%= link_to "Receipes", root_path %> 
+</h1>
 
-<%= form_with method: :get do |form| %> 
+<%= Time.zone.now %> 
+
+<%= form_with method: :get, data: { turbo_frame: "receipe-table" } do |form| %> 
   <%= form.search_field :query, placeholder: "Search", value: @search_query %> 
 <% end %> 
 
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">Name</th>
-      <th scope="col">Description</th>
-      <th scope="col">Ingredients</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @receipes.each do |receipe| %>
-      <tr>
-        <th scope="row"><%= link_to receipe.name, receipe %></th>
-        <th scope="row"><%= receipe.description%></th>
-
-        <th scope="row">
-          <% receipe.ingredients.each do |ingredient| %>
-            <%= "#{ingredient.quantity}x #{ingredient.name}" %>
-          <% end %> 
-        </th>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<%= render 'table', receipes: @receipes %> 
 
 <%= link_to "New receipe", new_receipe_path %>
