@@ -4,13 +4,25 @@ class Receipe < ApplicationRecord
   has_many :receipe_ingredients, dependent: :destroy
   has_many :ingredients, through: :receipe_ingredients
 
-  accepts_nested_attributes_for :ingredients, reject_if: :all_blank, allow_destroy: true
   accepts_nested_attributes_for :receipe_ingredients, reject_if: :all_blank, allow_destroy: true
 
   validates :name, presence: true
   validates :description, presence: true
   validates :instructions, presence: true
   validates :receipe_ingredients, presence: true
+
+  def receipe_ingredients_attributes=(attrs)
+    attrs.each do |_, value|
+      ingredient = Ingredient.find_by(name: value["ingredient_attributes"].dig(:name))
+
+      if ingredient.present?
+        value["ingredient_id"] = ingredient.id
+        value.delete("ingredient_attributes")
+      end
+    end
+
+    super
+  end
 
   pg_search_scope :search_by_name, against: :name
 end
