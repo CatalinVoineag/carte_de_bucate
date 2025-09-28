@@ -1,3 +1,5 @@
+require "open-uri"
+
 class ScraperOld
   attr_reader :url
 
@@ -7,7 +9,7 @@ class ScraperOld
 
   def self.call(url: nil)
     urls = [
-      "https://www.bbc.co.uk/food/recipes/cinnamon_doughnuts_with_48492"
+      "https://www.bbc.co.uk/food/recipes/pretzels_71296"
     ]
 
     urls.each do |url|
@@ -25,18 +27,34 @@ class ScraperOld
     attributes.merge!(info(browser))
     attributes.merge!(description(browser))
     attributes.merge!(instructions(browser))
-    receipe_ingredients = receipe_ingredients_attributes(browser)
+    attributes.merge!(receipe_ingredients_attributes(browser))
+    # receipe_ingredients = receipe_ingredients_attributes(browser)
 
     browser.quit
 
     ActiveRecord::Base.transaction do
       # We create the ingredients one by one
       # there is logic to not duplicate the records in Receipe model
-      receipe_ingredients[:receipe_ingredients_attributes].each do |key, value|
-        Receipe.create!(
-          attributes.merge(receipe_ingredients_attributes: { key => value }).with_indifferent_access
-        )
-      end
+      #
+      receipe = Receipe.create!(attributes.with_indifferent_access)
+      # Fix this!
+      # There's an insert for every ingredient.
+      # Can we monkey patch something?
+
+      # receipe_ingredients[:receipe_ingredients_attributes].each do |key, value|
+      #   receipe.receipe_ingredients = { key => value } .with_indifferent_access
+      #   receipe.save!
+      # end
+
+      # IMAGE
+      io = URI.open("https://ichef.bbci.co.uk/food/ic/food_16x9_448/foods/a/acidulated_water_16x9.jpg")
+
+      receipe.image.attach(
+        io: io,
+        filename: File.basename(io.path),
+        content_type: io.content_type
+      )
+      receipe.save!
     end
   end
 
@@ -97,6 +115,11 @@ class ScraperOld
 
     ingredients.each_with_index do |ingredient, index|
       # ingredient.text.include?(ingredient.css(":scope > a").first.text)
+      # Need to fix this. vanilla pod, split in half lengthways and seeds scraped out"
+      # This is not a valid name.
+      # Can we use the name of the Ingredient records?
+      # And add notes?
+
       if ingredient.text =~ /^\s*([\d\/\.]+(?:\s*\d+\/\d+)?)([a-zA-Z]+)?(?:\/[^\s]+(?:\s*\d+[a-zA-Z]+)*)?\s*(.+)$/
         quantity = $1.strip
         unit = ($2 || "").strip
