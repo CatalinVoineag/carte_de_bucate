@@ -7,6 +7,26 @@
   </p>
 
   <p>
+    <strong>Prep time:</strong>
+    <%= @receipe.prep_time %>
+  </p>
+
+  <p>
+    <strong>Cook time:</strong>
+    <%= @receipe.cook_time %>
+  </p>
+
+  <p>
+    <strong>Prep servings:</strong>
+    <%= @receipe.servings %>
+  </p>
+
+  <p>
+    <strong>Tags:</strong>
+    <%= @receipe.tags&.join(",") %>
+  </p>
+
+  <p>
     <strong>Description:</strong>
     <%= @receipe.description %>
   </p>
@@ -21,7 +41,12 @@
   </p>
 
   <% @receipe.receipe_ingredients.each do |receipe_ingredient| %>
-    <p><%= "#{receipe_ingredient.quantity}x #{receipe_ingredient.ingredient&.name}" %>
+    <p>
+    <%= 
+      "#{receipe_ingredient.quantity}#{receipe_ingredient.unit} \
+        #{receipe_ingredient.ingredient&.name}"
+      %>
+    </p>
   <% end %> 
 </div>
 
