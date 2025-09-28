@@ -13,7 +13,7 @@ class Receipe < ApplicationRecord
 
   def receipe_ingredients_attributes=(attrs)
     attrs.each do |_, value|
-      ingredient = Ingredient.find_by(name: value["ingredient_attributes"].dig(:name))
+      ingredient = Ingredient.find_by(name: value.dig("ingredient_attributes", "name"))
 
       if ingredient.present?
         value["ingredient_id"] = ingredient.id

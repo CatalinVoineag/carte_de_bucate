@@ -1,4 +1,4 @@
-class Scraper
+class ScraperOld
   attr_reader :url
 
   def initialize(url:)
@@ -7,10 +7,7 @@ class Scraper
 
   def self.call(url: nil)
     urls = [
-      "https://www.bbc.co.uk/food/recipes/pretzels_71296",
-      "https://www.bbc.co.uk/food/recipes/prawn_and_ginger_wontons_92941",
-      "https://www.bbc.co.uk/food/recipes/proper_baked_beans_with_36013",
-      "https://www.bbc.co.uk/food/recipes/basicpancakeswithsuga_66226"
+      "https://www.bbc.co.uk/food/recipes/cinnamon_doughnuts_with_48492"
     ]
 
     urls.each do |url|
@@ -28,11 +25,19 @@ class Scraper
     attributes.merge!(info(browser))
     attributes.merge!(description(browser))
     attributes.merge!(instructions(browser))
-    attributes.merge!(receipe_ingredients_attributes(browser))
+    receipe_ingredients = receipe_ingredients_attributes(browser)
 
     browser.quit
 
-    Receipe.create!(attributes.with_indifferent_access)
+    ActiveRecord::Base.transaction do
+      # We create the ingredients one by one
+      # there is logic to not duplicate the records in Receipe model
+      receipe_ingredients[:receipe_ingredients_attributes].each do |key, value|
+        Receipe.create!(
+          attributes.merge(receipe_ingredients_attributes: { key => value }).with_indifferent_access
+        )
+      end
+    end
   end
 
   private
@@ -42,8 +47,6 @@ class Scraper
       name: browser.at_css(".ssrcss-pbttu9-Heading").text
     }
   end
-
-  ## Remove the word oz from ingredients
 
   def info(browser)
     result = {}
@@ -93,7 +96,7 @@ class Scraper
     ingredients = ingredient_element.css(":scope > div > ul > li")
 
     ingredients.each_with_index do |ingredient, index|
-      #ingredient.text.include?(ingredient.css(":scope > a").first.text)
+      # ingredient.text.include?(ingredient.css(":scope > a").first.text)
       if ingredient.text =~ /^\s*([\d\/\.]+(?:\s*\d+\/\d+)?)([a-zA-Z]+)?(?:\/[^\s]+(?:\s*\d+[a-zA-Z]+)*)?\s*(.+)$/
         quantity = $1.strip
         unit = ($2 || "").strip

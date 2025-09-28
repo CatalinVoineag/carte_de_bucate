@@ -18,7 +18,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_19_164427) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["name"], name: "unique_receipe_nams", unique: true
+    t.index ["name"], name: "unique_receipe_name", unique: true
   end
 
   create_table "receipe_ingredients", force: :cascade do |t|
