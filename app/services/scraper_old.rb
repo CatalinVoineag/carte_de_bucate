@@ -9,7 +9,7 @@ class ScraperOld
 
   def self.call(url: nil)
     urls = [
-      "https://www.bbc.co.uk/food/recipes/pretzels_71296"
+      "https://www.bbc.co.uk/food/recipes/cinnamon_doughnuts_with_48492"
     ]
 
     urls.each do |url|
@@ -27,34 +27,33 @@ class ScraperOld
     attributes.merge!(info(browser))
     attributes.merge!(description(browser))
     attributes.merge!(instructions(browser))
-    attributes.merge!(receipe_ingredients_attributes(browser))
-    # receipe_ingredients = receipe_ingredients_attributes(browser)
+    receipe_ingredients = receipe_ingredients_attributes(browser)
 
     browser.quit
 
     ActiveRecord::Base.transaction do
-      # We create the ingredients one by one
       # there is logic to not duplicate the records in Receipe model
-      #
-      receipe = Receipe.create!(attributes.with_indifferent_access)
-      # Fix this!
-      # There's an insert for every ingredient.
-      # Can we monkey patch something?
+      # That's why we need to create ingredients one by one
+      first_receipe_ingredient = receipe_ingredients[:receipe_ingredients_attributes].delete(0)
 
-      # receipe_ingredients[:receipe_ingredients_attributes].each do |key, value|
-      #   receipe.receipe_ingredients = { key => value } .with_indifferent_access
-      #   receipe.save!
-      # end
+      attributes.merge!(receipe_ingredients_attributes: { 0 => first_receipe_ingredient })
+      receipe = Receipe.create!(attributes.with_indifferent_access)
+
+      receipe_ingredients[:receipe_ingredients_attributes].each do |key, value|
+        receipe.update!(
+          { receipe_ingredients_attributes: { key => value } }.with_indifferent_access
+        )
+      end
 
       # IMAGE
-      io = URI.open("https://ichef.bbci.co.uk/food/ic/food_16x9_448/foods/a/acidulated_water_16x9.jpg")
-
-      receipe.image.attach(
-        io: io,
-        filename: File.basename(io.path),
-        content_type: io.content_type
-      )
-      receipe.save!
+      # io = URI.open("https://ichef.bbci.co.uk/food/ic/food_16x9_448/foods/a/acidulated_water_16x9.jpg")
+      #
+      # receipe.image.attach(
+      #   io: io,
+      #   filename: File.basename(io.path),
+      #   content_type: io.content_type
+      # )
+      # receipe.save!
     end
   end
 

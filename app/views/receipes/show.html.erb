@@ -6,7 +6,9 @@
     <%= @receipe.name %>
   </p>
 
-  <p><%= image_tag url_for(@receipe.image) %></p>
+  <% if @receipe.image.present? %> 
+    <p><%= image_tag url_for(@receipe.image) %></p>
+  <% end %> 
 
   <p>
     <strong>Prep time:</strong>

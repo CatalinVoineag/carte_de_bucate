@@ -46,15 +46,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_28_184715) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["name"], name: "unique_receipe_name", unique: true
+    t.index ["name"], name: "unique_receipe_nams", unique: true
   end
 
   create_table "receipe_ingredients", force: :cascade do |t|
     t.bigint "receipe_id", null: false
     t.bigint "ingredient_id", null: false
-    t.string "quantity"
-    t.string "unit"
-    t.string "notes"
+    t.integer "quantity", null: false
+    t.integer "grams"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["ingredient_id"], name: "index_receipe_ingredients_on_ingredient_id"
@@ -65,10 +64,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_28_184715) do
     t.string "name"
     t.text "description"
     t.text "instructions"
-    t.string "prep_time"
-    t.string "cook_time"
-    t.string "servings"
-    t.string "tags", array: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
