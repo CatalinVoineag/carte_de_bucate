@@ -9,12 +9,11 @@ class ScraperOld
 
   def self.call(url: nil)
     urls = [
-      "https://www.bbc.co.uk/food/recipes/cinnamon_doughnuts_with_48492"
+      "https://www.bbc.co.uk/food/recipes/pretzels_71296"
     ]
 
     urls.each do |url|
       new(url:).call
-      sleep(0.5)
     end
   end
 
@@ -27,6 +26,7 @@ class ScraperOld
     attributes.merge!(info(browser))
     attributes.merge!(description(browser))
     attributes.merge!(instructions(browser))
+    image_url = browser.at_css("img")&.attribute("src")
     receipe_ingredients = receipe_ingredients_attributes(browser)
 
     browser.quit
@@ -45,15 +45,14 @@ class ScraperOld
         )
       end
 
-      # IMAGE
-      # io = URI.open("https://ichef.bbci.co.uk/food/ic/food_16x9_448/foods/a/acidulated_water_16x9.jpg")
-      #
-      # receipe.image.attach(
-      #   io: io,
-      #   filename: File.basename(io.path),
-      #   content_type: io.content_type
-      # )
-      # receipe.save!
+      io = URI.open(image_url)
+      receipe.image.attach(
+        io: io,
+        filename: File.basename(io.path),
+        content_type: io.content_type
+      )
+
+      receipe.save!
     end
   end
 

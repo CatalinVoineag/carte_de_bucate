@@ -7,7 +7,7 @@
   </p>
 
   <% if @receipe.image.present? %> 
-    <p><%= image_tag url_for(@receipe.image) %></p>
+    <p><%= image_tag url_for(@receipe.image), class: "img-thumbnail" %></p>
   <% end %> 
 
   <p>
