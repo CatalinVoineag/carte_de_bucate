@@ -111,28 +111,49 @@ class ScraperOld
     ingredient_element = browser.at_css(".ssrcss-5tl2t9-Wrapper")
     ingredients = ingredient_element.css(":scope > div > ul > li")
 
-    ingredients.each_with_index do |ingredient, index|
-      # ingredient.text.include?(ingredient.css(":scope > a").first.text)
-      # Need to fix this. vanilla pod, split in half lengthways and seeds scraped out"
-      # This is not a valid name.
-      # Can we use the name of the Ingredient records?
-      # And add notes?
+    ingredients.each_with_index do |ingredient_element, index|
+      anchor_ingredient = ingredient_element.css("a")&.first&.text
+      db_ingredient = Ingredient.search_by_name(anchor_ingredient)&.first&.name
+      ingredient_name = db_ingredient || anchor_ingredient
 
-      if ingredient.text =~ /^\s*([\d\/\.]+(?:\s*\d+\/\d+)?)([a-zA-Z]+)?(?:\/[^\s]+(?:\s*\d+[a-zA-Z]+)*)?\s*(.+)$/
+      notes = nil
+      text = ingredient_element.text.strip
+
+      if text =~ /^\s*([\d\/\.]+(?:\s*\d+\/\d+)?)([a-zA-Z]+)?(?:\/[^\s]+(?:\s*\d+[a-zA-Z]+)*)?\s*(.+)$/
         quantity = $1.strip
         unit = ($2 || "").strip
-        name = $3.gsub("oz ", "").gsub(/\/\dfl/, "").strip
+        rest = $3.gsub("oz ", "").gsub(/\/\dfl/, "").strip
+
+        if unit.blank? && rest =~ /^?(tbsp|tsp)\s*(.+)$/
+          unit = $1.strip
+          rest = $2.strip
+        end
+
+        if ingredient_name.present?
+          notes = rest.downcase == ingredient_name ? nil : rest.gsub(ingredient_name, "${}")
+          name = ingredient_name
+        else
+          name = rest
+        end
       else
         # fallback: no explicit quantity/unit
         quantity = ""
         unit = ""
-        name = ingredient.text.strip
+        rest = text
+
+        if ingredient_name.present?
+          notes = rest.downcase == ingredient_name ? nil : rest.gsub(ingredient_name, "${}")
+          name = ingredient_name
+        else
+          name = rest
+        end
       end
 
       result[:receipe_ingredients_attributes][index] = {
         quantity:,
         unit:,
-        ingredient_attributes: { name: name }
+        notes:,
+        ingredient_attributes: { name: }
       }
     end
 

@@ -45,12 +45,7 @@
   </p>
 
   <% @receipe.receipe_ingredients.each do |receipe_ingredient| %>
-    <p>
-    <%= 
-      "#{receipe_ingredient.quantity}#{receipe_ingredient.unit} \
-        #{receipe_ingredient.ingredient&.name}"
-      %>
-    </p>
+    <%= render IngredientComponent.new(receipe_ingredient:) %> 
   <% end %> 
 </div>
 

@@ -48,6 +48,7 @@ gem "pg_search"
 gem "faraday"
 gem "ferrum"
 gem "image_processing", ">= 1.2"
+gem "view_component"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
