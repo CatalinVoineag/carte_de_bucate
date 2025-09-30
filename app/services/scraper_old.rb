@@ -9,8 +9,17 @@ class ScraperOld
 
   def self.call(url: nil)
     urls = [
-      "https://www.bbc.co.uk/food/recipes/pretzels_71296"
+      "https://www.bbc.co.uk/food/recipes/freshpastadough_3067"
     ]
+    # CHECK WHY THESE INGREDIENTS ARE created
+    # <Ingredient:0x00007f472106e748 id: 1492, name: "yuzu", created_at: "2025-09-29 18:24:13.535272000 +0000", updated_at: "2025-09-29 18:24:21.469275000 +0000">,
+    # <Ingredient:0x00007f472106e888
+    # id: 1493,
+    # name: "zander",
+    # created_at: "2025-09-29 18:24:13.691584000 +0000",
+    # updated_at: "2025-09-29 18:24:21.475646000 +0000">,
+    # <Ingredient:0x00007f472106e9c8 id: 1494, name: "zest", created_at: "2025-09-29 18:24:13.866130000 +0000", updated_at: "2025-09-29 18:24:21.481669000 +0000">]
+
 
     urls.each do |url|
       new(url:).call
@@ -122,7 +131,13 @@ class ScraperOld
       if text =~ /^\s*([\d\/\.]+(?:\s*\d+\/\d+)?)([a-zA-Z]+)?(?:\/[^\s]+(?:\s*\d+[a-zA-Z]+)*)?\s*(.+)$/
         quantity = $1.strip
         unit = ($2 || "").strip
-        rest = $3.gsub("oz ", "").gsub(/\/\dfl/, "").strip
+        byebug
+        rest = $3.gsub("oz ", "").gsub(/\/\dfl/, "").gsub("’00’", "").strip
+
+        if anchor_ingredient.nil? && ingredient_name.nil?
+          first_word = rest.split.first
+          ingredient_name = Ingredient.search_by_name(first_word)&.first&.name
+        end
 
         if unit.blank? && rest =~ /^?(tbsp|tsp)\s*(.+)$/
           unit = $1.strip
