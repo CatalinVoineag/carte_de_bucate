@@ -1,5 +1,32 @@
-// Sassy
-@import "bootstrap";
+:root {
+  --dark-background-color: #181a1b;
+  --dark-text-color: #e8e6e3;
+}
+
+body {
+  background-color: var(--dark-background-color);
+}
+
+p,h,a {
+  color: var(--dark-text-color);
+}
+
+.container {
+  margin: auto;
+  max-width: 1280px;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+.grid {
+  display: grid;
+  gap: 3rem;
+  grid-template-columns: repeat(4, 1fr);
+}
+
 
 .field_with_errors label {
   color: red;  
@@ -8,3 +35,9 @@
 .field_with_errors input, .field_with_errors textarea {
   border: 2px solid red; 
 }
+
+.margin-top-15 {
+  margin-top: 15px !important;
+}
+
+@import "header";

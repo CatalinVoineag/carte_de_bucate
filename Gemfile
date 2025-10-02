@@ -41,7 +41,6 @@ gem "thruster", require: false
 # gem "image_processing", "~> 1.2"
 
 gem "dartsass-rails"
-gem "bootstrap", "~> 5.3.3"
 
 gem "pg_search"
 

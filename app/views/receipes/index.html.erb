@@ -6,12 +6,23 @@
   <%= link_to "Receipes", root_path %> 
 </h1>
 
-<%= Time.zone.now %> 
+<p><%= Time.zone.now %></p>
 
 <%= form_with method: :get, data: { turbo_frame: "receipe-table" } do |form| %> 
   <%= form.search_field :query, placeholder: "Search", value: @search_query %> 
 <% end %> 
 
-<%= render 'table', receipes: @receipes %> 
+<%= turbo_frame_tag "receipe-table" do %> 
+  <div class="grid margin-top-15">
+    <% @receipes.each do |receipe| %>
+      <%= link_to receipe_path(receipe), data: { turbo_frame: "_top" } do %>
+        <div>
+          <%= image_tag url_for(receipe.image), class: "img-thumbnail" %>
+          <h2 class="header-m"><%= receipe.name %></h2>
+        </div>
+      <% end %> 
+    <% end %>
+  </div>
+<% end %> 
 
 <%= link_to "New receipe", new_receipe_path %>
