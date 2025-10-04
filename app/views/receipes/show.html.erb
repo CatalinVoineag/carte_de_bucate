@@ -37,7 +37,11 @@
 
   <p>
     <strong>Instructions:</strong>
-    <%= @receipe.instructions %>
+    <ol type="1">
+      <% @receipe.instructions.each do |instruction| %>
+        <li><%= instruction.body %></li>
+      <% end %> 
+    </ol>
   </p>
 
   <p>

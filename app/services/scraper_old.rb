@@ -99,16 +99,16 @@ class ScraperOld
   end
 
   def instructions(browser)
-    result = { instructions: "" }
+    result = { instructions_attributes: {} }
     instructions = browser.at_css(".ssrcss-1o787j8-OrderedList")
     children = instructions.css(":scope > *")
 
     children.each_with_index.map do |child, index|
-      result[:instructions].concat(
-        "#{index + 1}. #{child.text}",
-      )
+      result[:instructions_attributes][index] = {
+        step: index,
+        body: child.text
+      }
     end
-
     result
   end
 

@@ -3,9 +3,11 @@ class Receipe < ApplicationRecord
 
   has_many :receipe_ingredients, dependent: :destroy
   has_many :ingredients, through: :receipe_ingredients
+  has_many :instructions, -> { order(:step) }, dependent: :destroy
   has_one_attached :image
 
   accepts_nested_attributes_for :receipe_ingredients, reject_if: :all_blank, allow_destroy: true
+  accepts_nested_attributes_for :instructions, reject_if: :all_blank, allow_destroy: true
 
   validates :name, presence: true
   validates :description, presence: true
