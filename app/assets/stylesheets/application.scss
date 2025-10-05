@@ -8,7 +8,7 @@ body {
   background-color: var(--dark-background-color);
 }
 
-p,h,a,li {
+p, h, a, li, span {
   color: var(--dark-text-color);
 }
 
@@ -40,4 +40,6 @@ img {
 
 @import "utility";
 @import "header";
+@import "navigation";
+@import "typography";
 @import "receipes/style";

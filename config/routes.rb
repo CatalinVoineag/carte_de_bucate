@@ -3,4 +3,5 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   resources :receipes
+  resources :saved_receipes, only: :index
 end

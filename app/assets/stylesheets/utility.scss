@@ -2,6 +2,10 @@
   margin-top: 15px !important;
 }
 
+.margin-bottom-20 {
+  margin-bottom: 20px !important;
+}
+
 .border-right {
   border-right: 1px solid var(--darkreader-border);
 }
@@ -15,4 +19,8 @@
 .default-list > li {
   padding-top: 0.75rem; 
   padding-bottom: 0.75rem; 
+}
+
+.body {
+  font-size: 1.85rem;
 }
