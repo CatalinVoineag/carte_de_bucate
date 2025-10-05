@@ -1,2 +1,19 @@
-<h1>SavedReceipes#index</h1>
-<p>Find me in app/views/saved_receipes/index.html.erb</p>
+<p style="color: green"><%= notice %></p>
+<% content_for :title, "My Receipes" %>
+
+<%= form_with method: :get, data: { turbo_frame: "receipe-table" } do |form| %> 
+  <%= form.search_field :query, placeholder: "Search", value: @search_query %> 
+<% end %> 
+
+<%= turbo_frame_tag "my-receipes" do %> 
+  <div class="grid receipe-grid margin-top-15">
+    <% @receipes.each do |receipe| %>
+      <%= link_to receipe_path(receipe), data: { turbo_frame: "_top" } do %>
+        <div>
+          <%= image_tag url_for(receipe.image), class: "img-thumbnail" %>
+          <h2 class="header-m"><%= receipe.name %></h2>
+        </div>
+      <% end %> 
+    <% end %>
+  </div>
+<% end %> 

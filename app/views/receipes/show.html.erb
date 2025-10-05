@@ -12,6 +12,11 @@
 
     <div class="grid receipe-header-info">
       <div>
+        <!-- <%# this needs to be a compoonent %>  -->
+        <%= render SaveReceipeComponent.new(receipe: @receipe, user: current_user) %> 
+      </div>
+
+      <div>
         <p>
           <strong>Prep time:</strong>
           <%= @receipe.prep_time %>
@@ -22,6 +27,7 @@
           <%= @receipe.cook_time %>
         </p>
       </div>
+
       <div>
         <p>
           <strong>Servings:</strong>

@@ -1,3 +1,4 @@
+# STI for receipe and saved_receipe
 class Receipe < ApplicationRecord
   include PgSearch::Model
 
@@ -6,6 +7,8 @@ class Receipe < ApplicationRecord
   has_many :instructions, -> { order(:step) }, dependent: :destroy
   has_one_attached :image
 
+  belongs_to :user, optional: true
+
   accepts_nested_attributes_for :receipe_ingredients, reject_if: :all_blank, allow_destroy: true
   accepts_nested_attributes_for :instructions, reject_if: :all_blank, allow_destroy: true
 
@@ -13,6 +16,11 @@ class Receipe < ApplicationRecord
   validates :description, presence: true
   validates :instructions, presence: true
   validates :receipe_ingredients, presence: true
+
+  scope :global, -> { where(user_id: nil) }
+  scope :not_global, -> { where.not(user_id: nil) }
+
+  pg_search_scope :search_by_name, against: :name
 
   def receipe_ingredients_attributes=(attrs)
     attrs.each do |_, value|
@@ -27,5 +35,6 @@ class Receipe < ApplicationRecord
     super
   end
 
-  pg_search_scope :search_by_name, against: :name
+  def save_to_user
+  end
 end
