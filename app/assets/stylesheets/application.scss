@@ -1,6 +1,7 @@
 :root {
   --dark-background-color: #181a1b;
   --dark-text-color: #e8e6e3;
+  --darkreader-border: #363b3d;
 }
 
 body {
@@ -23,10 +24,7 @@ img {
 
 .grid {
   display: grid;
-  gap: 3rem;
-  grid-template-columns: repeat(4, 1fr);
 }
-
 
 .field_with_errors label {
   color: red;  
@@ -36,8 +34,10 @@ img {
   border: 2px solid red; 
 }
 
-.margin-top-15 {
-  margin-top: 15px !important;
+@media (max-width: 700px) {
+  body { padding: 1rem; }
 }
 
+@import "utility";
 @import "header";
+@import "receipes/style";

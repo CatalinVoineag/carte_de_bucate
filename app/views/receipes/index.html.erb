@@ -13,7 +13,7 @@
 <% end %> 
 
 <%= turbo_frame_tag "receipe-table" do %> 
-  <div class="grid margin-top-15">
+  <div class="grid receipe-grid margin-top-15">
     <% @receipes.each do |receipe| %>
       <%= link_to receipe_path(receipe), data: { turbo_frame: "_top" } do %>
         <div>

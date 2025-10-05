@@ -1,0 +1,18 @@
+.margin-top-15 {
+  margin-top: 15px !important;
+}
+
+.border-right {
+  border-right: 1px solid var(--darkreader-border);
+}
+
+.default-list {
+  list-style: none !important;
+  padding: 0 !important; 
+  margin: 0 !important; 
+}
+
+.default-list > li {
+  padding-top: 0.75rem; 
+  padding-bottom: 0.75rem; 
+}

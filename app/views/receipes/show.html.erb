@@ -1,59 +1,66 @@
 <p style="color: green"><%= notice %></p>
 
-<div id="<%= dom_id @receipe %>">
-  <p>
-    <strong>Name:</strong>
-    <%= @receipe.name %>
-  </p>
-
-  <% if @receipe.image.present? %> 
-    <p><%= image_tag url_for(@receipe.image), class: "img-thumbnail" %></p>
-  <% end %> 
-
-  <p>
-    <strong>Prep time:</strong>
-    <%= @receipe.prep_time %>
-  </p>
-
-  <p>
-    <strong>Cook time:</strong>
-    <%= @receipe.cook_time %>
-  </p>
-
-  <p>
-    <strong>Prep servings:</strong>
-    <%= @receipe.servings %>
-  </p>
-
-  <p>
-    <strong>Tags:</strong>
-    <%= @receipe.tags&.join(",") %>
-  </p>
-
-  <p>
-    <strong>Description:</strong>
-    <%= @receipe.description %>
-  </p>
-
-  <p>
-    <strong>Instructions:</strong>
-    <ol type="1">
-      <% @receipe.instructions.each do |instruction| %>
-        <li><%= instruction.body %></li>
-      <% end %> 
-    </ol>
-  </p>
-
-  <p>
-    <strong>Ingredients:</strong>
-  </p>
-
-  <% @receipe.receipe_ingredients.each do |receipe_ingredient| %>
-    <%= render IngredientComponent.new(receipe_ingredient:) %> 
-  <% end %> 
-</div>
-
 <div>
+  <p><%= @receipe.name %></p>
+
+  <div class="grid receipe-info-grid">
+    <div>
+      <% if @receipe.image.present? %> 
+        <p><%= image_tag url_for(@receipe.image), class: "img-thumbnail" %></p>
+      <% end %> 
+    </div>
+
+    <div class="grid receipe-header-info">
+      <div>
+        <p>
+          <strong>Prep time:</strong>
+          <%= @receipe.prep_time %>
+        </p>
+
+        <p>
+          <strong>Cook time:</strong>
+          <%= @receipe.cook_time %>
+        </p>
+      </div>
+      <div>
+        <p>
+          <strong>Servings:</strong>
+          <%= @receipe.servings %>
+        </p>
+
+        <p>
+          <strong>Tags:</strong>
+          <%= @receipe.tags&.join(", ") %>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <p><%= @receipe.description %></p>
+
+  <div class="grid receipe-instruction-grid">
+    <div>
+      <p>
+        <strong>Ingredients:</strong>
+      </p>
+
+      <% @receipe.receipe_ingredients.each do |receipe_ingredient| %>
+        <%= render IngredientComponent.new(receipe_ingredient:) %> 
+      <% end %> 
+    </div>
+
+    <div>
+      <p><strong>Instructions:</strong></p>
+      <ul class="default-list">
+        <% @receipe.instructions.each do |instruction| %>
+          <li><%= "#{instruction.step += 1}. #{instruction.body}" %></li>
+        <% end %> 
+      </ul>
+    </div>
+  </div>
+
+  <br>
+  <br>
   <%= link_to "Edit this receipe", edit_receipe_path(@receipe) %> |
   <%= link_to "Back to receipes", receipes_path %>
 
