@@ -3,7 +3,10 @@ class SaveReceipesController < ApplicationController
     receipe = Receipe.find_by(id: params.require(:receipe_id))
 
     if receipe.present? && ReceipeService::User.save(receipe:, user: current_user)
-      render json: {}, status: :ok
+      respond_to do |format|
+        format.html { redirect_to recipe_path(receipe) }
+        format.turbo_stream { render locals: { receipe: } }
+      end
     else
       render json: {}, status: :bad_request
     end
@@ -13,7 +16,10 @@ class SaveReceipesController < ApplicationController
     receipe = Receipe.find_by(id: params.require(:id))
 
     if receipe.present? && ReceipeService::User.remove(receipe:, user: current_user)
-      render json: {}, status: :ok
+      respond_to do |format|
+        format.html { redirect_to recipe_path(receipe) }
+        format.turbo_stream { render locals: { receipe: } }
+      end
     else
       render json: {}, status: :bad_request
     end

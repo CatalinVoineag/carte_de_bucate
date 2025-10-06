@@ -11,8 +11,7 @@
     </div>
 
     <div class="grid receipe-header-info">
-      <div>
-        <!-- <%# this needs to be a compoonent %>  -->
+      <div id="save_receipe">
         <%= render SaveReceipeComponent.new(receipe: @receipe, user: current_user) %> 
       </div>
 
