@@ -1,0 +1,60 @@
+<div>
+  <p><%= @my_receipe.name %></p>
+
+  <div class="grid receipe-info-grid">
+    <div>
+      <% if @my_receipe.image.present? %> 
+        <%= image_tag url_for(@my_receipe.image), class: "img-thumbnail" %>
+      <% end %> 
+    </div>
+
+    <div class="grid receipe-header-info">
+      <div>
+        <p>
+          <strong>Prep time:</strong>
+          <%= @my_receipe.prep_time %>
+        </p>
+
+        <p>
+          <strong>Cook time:</strong>
+          <%= @my_receipe.cook_time %>
+        </p>
+      </div>
+
+      <div>
+        <p>
+          <strong>Servings:</strong>
+          <%= @my_receipe.servings %>
+        </p>
+
+        <p>
+          <strong>Tags:</strong>
+          <%= @my_receipe.tags&.join(", ") %>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <p><%= @my_receipe.description %></p>
+
+  <div class="grid receipe-instruction-grid">
+    <div>
+      <p>
+        <strong>Ingredients:</strong>
+      </p>
+
+      <% @my_receipe.receipe_ingredients.each do |receipe_ingredient| %>
+        <%= render IngredientComponent.new(receipe_ingredient:) %> 
+      <% end %> 
+    </div>
+
+    <div>
+      <p><strong>Instructions:</strong></p>
+      <ul class="default-list">
+        <% @my_receipe.instructions.each do |instruction| %>
+          <li><%= "#{instruction.step += 1}. #{instruction.body}" %></li>
+        <% end %> 
+      </ul>
+    </div>
+  </div>
+</div>

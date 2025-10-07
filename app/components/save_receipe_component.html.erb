@@ -1,0 +1,5 @@
+<% if user.my_receipes.find_by(global_receipe_id: receipe.id).present? %> 
+  <%= render partial: "save_receipes/remove_receipe", locals: { receipe: } %>
+<% else %> 
+  <%= render partial: "save_receipes/save_receipe", locals: { receipe: } %>
+<% end %> 

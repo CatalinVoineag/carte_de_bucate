@@ -27,6 +27,8 @@ class ScraperOld
     browser = Ferrum::Browser.new
     browser.go_to(url)
 
+    # FIGURE OUT HOW TO DEFAULT A TYPE BASED ON CLASS NAME FOR RECEIPE
+
     attributes.merge!(name(browser))
     attributes.merge!(info(browser))
     attributes.merge!(description(browser))
@@ -42,7 +44,7 @@ class ScraperOld
       first_receipe_ingredient = receipe_ingredients[:receipe_ingredients_attributes].delete(0)
 
       attributes.merge!(receipe_ingredients_attributes: { 0 => first_receipe_ingredient })
-      receipe = Receipe.create!(attributes.with_indifferent_access)
+      receipe = GlobalReceipe.create!(attributes.with_indifferent_access)
 
       receipe_ingredients[:receipe_ingredients_attributes].each do |key, value|
         receipe.update!(

@@ -12,10 +12,19 @@ module ReceipeService
     end
 
     def save
-      # This needs to create a new receipe, dup with all associations
-      return false if receipe.user.present?
+      dup = receipe.dup
 
-      receipe.update(user:)
+      ActiveRecord::Base.transaction do
+        dup.type = "MyReceipe"
+        dup.user_id = user.id
+        dup.global_receipe_id = receipe.id
+        dup.image.attach(receipe.image.blob)
+        dup.ingredients = receipe.ingredients
+        dup.instructions = receipe.instructions.map(&:dup)
+        dup.save
+      end
+
+      dup.persisted?
     end
 
     def self.remove(receipe:, user:)
@@ -23,8 +32,7 @@ module ReceipeService
     end
 
     def remove
-      # Remove saved receipe STI record
-      Receipe.find_by(user_id: user.id)&.update(user_id: nil)
+      user.my_receipes.find_by(global_receipe_id: receipe.id)&.destroy
     end
   end
 end

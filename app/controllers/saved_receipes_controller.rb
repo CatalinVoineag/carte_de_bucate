@@ -5,12 +5,12 @@ class SavedReceipesController < ApplicationController
     @search_query = params[:query]
 
     if @search_query.present?
-      @receipes = current_user.receipes.search_by_name(@search_query).order(created_at: :desc)
+      @my_receipes = current_user.my_receipes.search_by_name(@search_query).order(created_at: :desc)
     else
-      @receipes = current_user.receipes.all.order(created_at: :desc)
+      @my_receipes = current_user.my_receipes.all.order(created_at: :desc)
     end
 
-    @receipes.includes(:ingredients)
+    @my_receipes.includes(:ingredients)
   end
 
   def show; end
@@ -18,6 +18,6 @@ class SavedReceipesController < ApplicationController
   private
 
   def set_receipe
-    @receipe = Receipe.find(params.expect(:id))
+    @my_receipe = current_user.my_receipes.find(params.expect(:id))
   end
 end

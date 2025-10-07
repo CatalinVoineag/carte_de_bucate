@@ -6,9 +6,9 @@ class ReceipesController < ApplicationController
     @search_query = params[:query]
 
     if @search_query.present?
-      @receipes = Receipe.search_by_name(@search_query).order(created_at: :desc)
+      @receipes = GlobalReceipe.search_by_name(@search_query).order(created_at: :desc)
     else
-      @receipes = Receipe.all.order(created_at: :desc)
+      @receipes = GlobalReceipe.all.order(created_at: :desc)
     end
 
     @receipes.includes(:ingredients)
@@ -20,7 +20,7 @@ class ReceipesController < ApplicationController
 
   # GET /receipes/new
   def new
-    @receipe = Receipe.new
+    @receipe = GlobalReceipe.new
     @receipe.receipe_ingredients.build.build_ingredient
   end
 
@@ -30,7 +30,7 @@ class ReceipesController < ApplicationController
 
   # POST /receipes or /receipes.json
   def create
-    @receipe = Receipe.new(receipe_params)
+    @receipe = GlobalReceipe.new(receipe_params)
 
     respond_to do |format|
       if @receipe.save
@@ -73,7 +73,7 @@ class ReceipesController < ApplicationController
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_receipe
-    @receipe = Receipe.find(params.expect(:id))
+    @receipe = GlobalReceipe.find(params.expect(:id))
   end
 
   # Only allow a list of trusted parameters through.
