@@ -27,8 +27,6 @@ class ScraperOld
     browser = Ferrum::Browser.new
     browser.go_to(url)
 
-    # FIGURE OUT HOW TO DEFAULT A TYPE BASED ON CLASS NAME FOR RECEIPE
-
     attributes.merge!(name(browser))
     attributes.merge!(info(browser))
     attributes.merge!(description(browser))

@@ -3,8 +3,16 @@
 
 <p><%= Time.zone.now %></p>
 
-<%= form_with method: :get, data: { turbo_frame: "receipe-table" } do |form| %> 
-  <%= form.search_field :query, placeholder: "Search", value: @search_query %> 
+<%= form_with(
+  method: :get,
+  data: { turbo_frame: "receipe-table", controller: "auto-submit" }
+) do |form| %> 
+  <%= form.search_field(
+    :query,
+    placeholder: "Search",
+    value: @search_query,
+    data: { auto_submit_target: "input" }
+  ) %> 
 <% end %> 
 
 <%= turbo_frame_tag "receipe-table" do %> 

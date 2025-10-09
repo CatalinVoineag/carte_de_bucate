@@ -16,7 +16,15 @@ class Receipe < ApplicationRecord
   validates :instructions, presence: true
   validates :receipe_ingredients, presence: true
 
-  pg_search_scope :search_by_name, against: :name
+  pg_search_scope :search_by_name,
+                  against: :name,
+                  using: {
+                    tsearch: {
+                      prefix: true,
+                      normalization: 2,
+                      dictionary: "english"
+                    }
+                  }
 
   def receipe_ingredients_attributes=(attrs)
     attrs.each do |_, value|
