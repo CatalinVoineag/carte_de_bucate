@@ -3,7 +3,7 @@ class ReceipesController < ApplicationController
 
   # GET /receipes or /receipes.json
   def index
-    filter_form = UserService::Filters.new(params:)
+    filter_form = ReceipeFilterForm.new(params:, receipe_class: GlobalReceipe)
     @receipes = filter_form.filtered_receipes
     @receipe_name_query = filter_form.receipe_name.presence
     @ingredients_query = filter_form.ingredients.presence

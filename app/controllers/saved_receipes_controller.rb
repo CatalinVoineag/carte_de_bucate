@@ -2,15 +2,10 @@ class SavedReceipesController < ApplicationController
   before_action :set_receipe, only: %i[ show ]
 
   def index
-    @search_query = params[:query]
-
-    if @search_query.present?
-      @my_receipes = current_user.my_receipes.search_by_name(@search_query).order(created_at: :desc)
-    else
-      @my_receipes = current_user.my_receipes.all.order(created_at: :desc)
-    end
-
-    @my_receipes
+    filter_form = ReceipeFilterForm.new(params:, receipe_class: MyReceipe)
+    @my_receipes = filter_form.filtered_receipes
+    @receipe_name_query = filter_form.receipe_name.presence
+    @ingredients_query = filter_form.ingredients.presence
   end
 
   def show; end

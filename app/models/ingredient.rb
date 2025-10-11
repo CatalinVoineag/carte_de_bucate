@@ -3,7 +3,11 @@ class Ingredient < ApplicationRecord
 
   has_many :receipe_ingredients, dependent: :destroy
   has_many :receipes, class_name: "GlobalReceipe", through: :receipe_ingredients
-  has_many :my_receipes, class_name: "MyReceipe", through: :receipe_ingredients
+  has_many :my_receipes,
+         -> { where(receipes: { type: "MyReceipe" }) },
+         through: :receipe_ingredients,
+         source: :receipe
+
   has_one_attached :image
 
   validates :name, presence: true
