@@ -1,18 +1,44 @@
 <p style="color: green"><%= notice %></p>
 <% content_for :title, "Receipes" %>
 
-<p><%= Time.zone.now %></p>
-
 <%= form_with(
   method: :get,
-  data: { turbo_frame: "receipe-table", controller: "auto-submit" }
+  scope: :filters,
+  data: {
+    turbo_frame: "receipe-table",
+    controller: "auto-submit",
+    auto_submit_target: "form"
+  }
 ) do |form| %> 
-  <%= form.search_field(
-    :query,
-    placeholder: "Search",
-    value: @search_query,
-    data: { auto_submit_target: "input" }
-  ) %> 
+  <div class="margin-bottom-10">
+    <%= form.label :query, "Search receipe" %> 
+  </div>
+  <div>
+    <%= form.search_field(
+      :receipe_name,
+      placeholder: "Receipe name",
+      value: @receipe_name_query,
+      data: { auto_submit_target: "input" },
+      size: 30
+    ) %> 
+  </div>
+
+  <br> 
+  <br> 
+  <br> 
+
+  <div class="margin-bottom-10">
+    <%= form.label :ingredient_query, "Search by ingredients" %> 
+  </div>
+  <div>
+    <%= form.text_area(
+      :ingredients,
+      placeholder: "Add a comma between ingredients",
+      value: @ingredients_query,
+      data: { auto_submit_target: "secondInput" },
+      size: "30x5"
+    ) %> 
+  </div>
 <% end %> 
 
 <%= turbo_frame_tag "receipe-table" do %> 

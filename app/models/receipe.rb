@@ -3,7 +3,7 @@ class Receipe < ApplicationRecord
   include PgSearch::Model
 
   has_many :receipe_ingredients, dependent: :destroy
-  has_many :ingredients, through: :receipe_ingredients
+  has_many :ingredients, -> { distinct }, through: :receipe_ingredients
   has_many :instructions, -> { order(:step) }, dependent: :destroy
   has_one_attached :image
 

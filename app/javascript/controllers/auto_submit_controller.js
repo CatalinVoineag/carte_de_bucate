@@ -2,14 +2,22 @@ import { Controller } from "@hotwired/stimulus"
 import debounce from "lodash.debounce";
 
 export default class extends Controller {
-  static targets = ['input']
+  static targets = ["input", "secondInput", "form"]
 
   connect() {
-    this.submit = debounce(this.submit, 200)
-    this.inputTarget.addEventListener("input", this.submit);
+    this.debounceSubmit = debounce(() => this.submit(this.formTarget), 200)
+    this.inputTarget.addEventListener("input", this.debounceSubmit);
+
+    if (this.hasSecondInputTarget) {
+      this.secondInputTarget.addEventListener("input", this.debounceSubmit);
+    }
   }
 
-  submit(event) {
-    event.target.parentNode.requestSubmit()
+   disconnect() {
+    this.inputTarget.removeEventListener("input", this.debouncedSubmit)
+  }
+
+  submit(formTarget) {
+    formTarget.requestSubmit()
   }
 }

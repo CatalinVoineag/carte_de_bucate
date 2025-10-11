@@ -3,15 +3,10 @@ class ReceipesController < ApplicationController
 
   # GET /receipes or /receipes.json
   def index
-    @search_query = params[:query]
-
-    if @search_query.present?
-      @receipes = GlobalReceipe.search_by_name(@search_query).order(created_at: :desc)
-    else
-      @receipes = GlobalReceipe.all.order(created_at: :desc)
-    end
-
-    @receipes.includes(:ingredients)
+    filter_form = UserService::Filters.new(params:)
+    @receipes = filter_form.filtered_receipes
+    @receipe_name_query = filter_form.receipe_name.presence
+    @ingredients_query = filter_form.ingredients.presence
   end
 
   # GET /receipes/1 or /receipes/1.json

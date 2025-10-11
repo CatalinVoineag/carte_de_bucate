@@ -10,7 +10,7 @@ class SavedReceipesController < ApplicationController
       @my_receipes = current_user.my_receipes.all.order(created_at: :desc)
     end
 
-    @my_receipes.includes(:ingredients)
+    @my_receipes
   end
 
   def show; end

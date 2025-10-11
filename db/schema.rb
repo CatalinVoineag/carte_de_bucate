@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_07_200556) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_11_133346) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
@@ -88,6 +88,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_07_200556) do
     t.index ["user_id"], name: "index_receipes_on_user_id"
   end
 
+  create_table "user_filters", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "kind"
+    t.jsonb "filters", default: {}
+    t.integer "pagination_page"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id", "kind"], name: "index_user_filters_on_user_id_and_kind", unique: true
+    t.index ["user_id"], name: "index_user_filters_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", null: false
     t.datetime "created_at", null: false
@@ -102,4 +113,5 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_07_200556) do
   add_foreign_key "receipe_ingredients", "receipes", on_delete: :cascade
   add_foreign_key "receipes", "receipes", column: "global_receipe_id"
   add_foreign_key "receipes", "users", on_delete: :cascade
+  add_foreign_key "user_filters", "users"
 end
