@@ -16,6 +16,11 @@ class Receipe < ApplicationRecord
   validates :instructions, presence: true
   validates :receipe_ingredients, presence: true
 
+  enum :status, {
+    draft: "draft",
+    published: "published"
+  }
+
   pg_search_scope :search_by_name,
                   against: :name,
                   using: {
@@ -25,6 +30,8 @@ class Receipe < ApplicationRecord
                       dictionary: "english"
                     }
                   }
+
+  pg_search_scope :search_by_tags, against: :tags
 
   def receipe_ingredients_attributes=(attrs)
     attrs.each do |_, value|

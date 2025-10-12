@@ -1,0 +1,51 @@
+<% content_for :title, "New receipe" %>
+<%= link_to "Back", saved_receipes_path %>
+
+<h1>New receipe</h1>
+
+<%= form_with(model: @start_form, url: create_saved_receipes_path) do |form| %>
+  <% if @start_form.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(receipe.errors.count, "error") %> prohibited this receipe from being saved:</h2>
+
+      <ul>
+        <% receipe.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :name, style: "display: block" %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div>
+    <%= form.label :prep_time, style: "display: block" %>
+    <%= form.text_field :prep_time %>
+  </div>
+
+
+  <div>
+    <%= form.label :cook_time, style: "display: block" %>
+    <%= form.text_field :cook_time %>
+  </div>
+
+  <div>
+    <%= form.label :servings, style: "display: block" %>
+    <%= form.text_field :servings %>
+  </div>
+
+  <!-- tags: ["Nut-free", "Pregnancy-friendly", "Vegetarian"], -->
+
+  <div>
+    <%= form.label :description, style: "display: block" %>
+    <%= form.textarea :description %>
+  </div>
+
+  <br>
+  <div>
+    <%= form.submit "Continue" %>
+  </div>
+<% end %>

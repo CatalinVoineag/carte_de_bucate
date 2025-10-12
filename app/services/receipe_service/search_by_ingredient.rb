@@ -1,15 +1,15 @@
 module ReceipeService
   class SearchByIngredient
-    attr_reader :ingredients_array, :scope, :receipe_class
+    attr_reader :ingredients_array, :receipe_scope, :receipe_class
 
-    def initialize(ingredients:, scope:, receipe_class:)
+    def initialize(ingredients:, receipe_scope:, receipe_class:)
       @ingredients_array = ingredients.split(",")
-      @scope = scope
+      @receipe_scope = receipe_scope
       @receipe_class = receipe_class
     end
 
-    def self.call(ingredients:, scope:, receipe_class:)
-      new(ingredients:, scope:, receipe_class:).call
+    def self.call(ingredients:, receipe_scope:, receipe_class:)
+      new(ingredients:, receipe_scope:, receipe_class:).call
     end
 
     def call
@@ -30,7 +30,7 @@ module ReceipeService
       end
 
       receipe_ids = receipes.sort_by { |key, value| value }.map { |e| e.first }
-      scope.where(id: receipe_ids).sort_by { |receipe| receipe_ids.index(receipe.id) }
+      receipe_scope.in_order_of(:id, receipe_ids)
     end
 
   private

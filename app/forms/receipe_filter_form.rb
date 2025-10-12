@@ -1,30 +1,39 @@
 class ReceipeFilterForm
+  include ActiveModel::Model
+
   attr_reader :filters, :receipe_class, :user
+  attr_accessor :receipe_name, :ingredients, :tags
 
   def initialize(params:, receipe_class:)
     @filters = params.fetch(:filters, {})
     @receipe_class = receipe_class
     @user = User.last
+
+    @receipe_name = @filters[:receipe_name] ||
+      @user.public_send(sti_methods[receipe_class.name][:filter])&.filters&.fetch("receipe_name", nil)
+    @ingredients = @filters[:ingredients] ||
+      @user.public_send(sti_methods[receipe_class.name][:filter])&.filters&.fetch("ingredients", nil)
+    @tags = @filters[:tags]&.compact_blank ||
+      @user.public_send(sti_methods[receipe_class.name][:filter])&.filters&.fetch("tags", {})
   end
 
   def filtered_receipes
-    receipes = nil
+    receipes = receipe_class.published.all
 
     if receipe_name.present?
-      receipes = receipe_class.search_by_name(receipe_name)
-        .order(created_at: :desc)
+      receipes = receipes.search_by_name(receipe_name)
+    end
+
+    if tags.present?
+      receipes = receipes.search_by_tags(tags)
     end
 
     if ingredients.present?
       receipes = ReceipeService::SearchByIngredient.call(
         ingredients:,
-        scope: receipes.presence || receipe_class,
+        receipe_scope: receipes,
         receipe_class:,
       )
-    end
-
-    if receipe_name.blank? && ingredients.blank?
-      receipes = receipe_class.all.order(created_at: :desc)
     end
 
     UserFilter.upsert(
@@ -36,24 +45,16 @@ class ReceipeFilterForm
       unique_by: [ :user_id, :kind ]
     )
 
-    receipes
+    receipes.order(created_at: :desc)
   end
 
-  def receipe_name
-    filters[:receipe_name] ||
-      user.public_send(sti_methods[receipe_class.name][:filter])&.filters&.fetch("receipe_name", nil)
-  end
-
-  def ingredients
-    filters[:ingredients] ||
-      user.public_send(sti_methods[receipe_class.name][:filter])&.filters&.fetch("ingredients", nil)
-  end
+  private
 
   def sanitised_filters
     if filters[:remove_filters] == true
       {}
     else
-      { receipe_name: receipe_name, ingredients: ingredients }
+      { receipe_name:, ingredients:, tags: }
     end
   end
 

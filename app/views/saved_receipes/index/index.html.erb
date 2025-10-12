@@ -2,10 +2,12 @@
 <% content_for :title, "My Receipes" %>
 
 <%= form_with(
+  model: @filter_form,
+  url: "",
   method: :get,
   scope: :filters,
   data: {
-    turbo_frame: "receipe-table",
+    turbo_frame: "my-receipes",
     controller: "auto-submit",
     auto_submit_target: "form"
   }
@@ -17,10 +19,14 @@
     <%= form.search_field(
       :receipe_name,
       placeholder: "Receipe name",
-      value: @receipe_name_query,
-      data: { auto_submit_target: "input" },
+      data: { auto_submit_target: "receipeInput" },
       size: 30
     ) %> 
+  </div>
+
+  <br> 
+  <div data-auto-submit-target="tagsInput">
+    <%= form.collection_checkboxes(:tags, @tags, :to_s, :to_s) %>
   </div>
 
   <br> 
@@ -34,8 +40,7 @@
     <%= form.text_area(
       :ingredients,
       placeholder: "Add a comma between ingredients",
-      value: @ingredients_query,
-      data: { auto_submit_target: "secondInput" },
+      data: { auto_submit_target: "ingredientInput" },
       size: "30x5"
     ) %> 
   </div>
@@ -45,7 +50,7 @@
 
 <%= turbo_frame_tag "my-receipes" do %> 
   <div class="grid receipe-grid margin-top-15">
-    <% @my_receipes.each do |receipe| %>
+    <% @filter_form.filtered_receipes.each do |receipe| %>
       <%= link_to saved_receipe_path(receipe), data: { turbo_frame: "_top" } do %>
         <div>
           <%= image_tag url_for(receipe.image), class: "img-thumbnail" %>
@@ -55,3 +60,5 @@
     <% end %>
   </div>
 <% end %> 
+
+<%= link_to "Create new receipe", start_saved_receipes_path %>

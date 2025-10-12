@@ -23,7 +23,7 @@ class ScraperOld
   end
 
   def call
-    attributes = {}
+    attributes = { status: :published }
     browser = Ferrum::Browser.new
     browser.go_to(url)
 
