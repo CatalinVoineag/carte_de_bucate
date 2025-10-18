@@ -44,10 +44,8 @@ env:
     SOLID_QUEUE_IN_PUMA: true
     POSTGRES_USER: catalin
     POSTGRES_DB: carte_de_bucate_production
-    POSTGRES_PASSWORD: password
     DB_HOST: 127.0.0.1
     DB_PORT: 5432
-    DATABASE_URL: postgresql://catalin:password@carte_de_bucate-postgres:5432/carte_de_bucate_production
 
     # Set number of processes dedicated to Solid Queue (default: 1)
     # JOB_CONCURRENCY: 3
@@ -112,7 +110,6 @@ accessories:
         POSTGRES_DB: carte_de_bucate_production
         DB_HOST: 127.0.0.1
         DB_PORT: 5432
-        POSTGRES_PASSWORD: password
       # secret:
       #   - POSTGRES_PASSWORD
     directories:
