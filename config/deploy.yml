@@ -102,10 +102,11 @@ accessories:
     port: "127.0.0.1:5432:5432"
     env:
       clear:
+        DB_HOST: carte_de_bucate-postgres
+        DB_PORT: 5432
         POSTGRES_USER: catalin
         POSTGRES_DB: carte_de_bucate_production
-        DB_HOST: 127.0.0.1
-        DB_PORT: 5432
+        DATABASE_URL: postgresql://catalin:${POSTGRES_PASSWORD}@carte_de_bucate-postgres:5432/carte_de_bucate_production
       secret:
         - POSTGRES_PASSWORD
     directories:
