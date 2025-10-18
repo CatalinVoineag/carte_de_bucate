@@ -1,0 +1,43 @@
+<%= form_with(model:, url:, method:) do |form| %>
+  <% if model.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(model.errors.count, "error") %> prohibited this receipe from being saved:</h2>
+
+      <ul>
+        <% model.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :name, style: "display: block" %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div>
+    <%= form.label :prep_time, style: "display: block" %>
+    <%= form.text_field :prep_time %>
+  </div>
+
+  <div>
+    <%= form.label :cook_time, style: "display: block" %>
+    <%= form.text_field :cook_time %>
+  </div>
+
+  <div>
+    <%= form.label :servings, style: "display: block" %>
+    <%= form.text_field :servings %>
+  </div>
+
+  <div>
+    <%= form.label :description, style: "display: block" %>
+    <%= form.textarea :description %>
+  </div>
+
+  <br>
+  <div>
+    <%= form.submit "Continue" %>
+  </div>
+<% end %>

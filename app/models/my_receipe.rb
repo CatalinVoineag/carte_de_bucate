@@ -1,4 +1,4 @@
 class MyReceipe < Receipe
-  belongs_to :user, optional: true
-  belongs_to :global_receipe
+  belongs_to :user
+  belongs_to :global_receipe, optional: true
 end

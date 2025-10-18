@@ -10,12 +10,6 @@ class Receipe < ApplicationRecord
   accepts_nested_attributes_for :receipe_ingredients, reject_if: :all_blank, allow_destroy: true
   accepts_nested_attributes_for :instructions, reject_if: :all_blank, allow_destroy: true
 
-  validates :name, presence: true
-  validates :type, presence: true
-  validates :description, presence: true
-  validates :instructions, presence: true
-  validates :receipe_ingredients, presence: true
-
   enum :status, {
     draft: "draft",
     published: "published"
