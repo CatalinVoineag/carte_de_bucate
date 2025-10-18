@@ -2,12 +2,12 @@
 service: carte_de_bucate
 
 # Name of the container image.
-image: your-user/carte_de_bucate
+image: dwarfi/carte_de_bucate
 
 # Deploy to these servers.
 servers:
   web:
-    - 192.168.0.1
+    - 192.168.0.243
   # job:
   #   hosts:
   #     - 192.168.0.1
@@ -22,10 +22,13 @@ proxy:
   host: app.example.com
 
 # Credentials for your image host.
+ssh: 
+  user: pi
 registry:
   # Specify the registry server, if you're not using Docker Hub
   # server: registry.digitalocean.com / ghcr.io / ...
-  username: your-user
+  server: docker.io
+  username: dwarfi
 
   # Always use an access token rather than real password when possible.
   password:
@@ -75,7 +78,7 @@ asset_path: /rails/public/assets
 
 # Configure the image builder.
 builder:
-  arch: amd64
+  arch: arm64
 
   # # Build image via remote server (useful for faster amd64 builds on arm64 computers)
   # remote: ssh://docker@docker-builder-server
@@ -89,7 +92,7 @@ builder:
 
 # Use a different ssh user than root
 # ssh:
-#   user: app
+#   user: pi
 
 # Use accessory services (secrets come from .kamal/secrets).
 # accessories:
