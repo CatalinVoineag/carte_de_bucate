@@ -81,9 +81,8 @@ test:
 production:
   primary: &primary_production
     <<: *default
+    url: <%= ENV['DATABASE_URL'] %>
     database: carte_de_bucate_production
-    username: carte_de_bucate
-    password: <%= ENV["CARTE_DE_BUCATE_DATABASE_PASSWORD"] %>
   cache:
     <<: *primary_production
     database: carte_de_bucate_production_cache
