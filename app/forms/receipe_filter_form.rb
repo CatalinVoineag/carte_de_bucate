@@ -10,11 +10,11 @@ class ReceipeFilterForm
     @user = User.last
 
     @receipe_name = @filters[:receipe_name] ||
-      @user.public_send(sti_methods[receipe_class.name][:filter])&.filters&.fetch("receipe_name", nil)
+      @user&.public_send(sti_methods[receipe_class.name][:filter])&.filters&.fetch("receipe_name", nil)
     @ingredients = @filters[:ingredients] ||
-      @user.public_send(sti_methods[receipe_class.name][:filter])&.filters&.fetch("ingredients", nil)
+      @user&.public_send(sti_methods[receipe_class.name][:filter])&.filters&.fetch("ingredients", nil)
     @tags = @filters[:tags]&.compact_blank ||
-      @user.public_send(sti_methods[receipe_class.name][:filter])&.filters&.fetch("tags", {})
+      @user&.public_send(sti_methods[receipe_class.name][:filter])&.filters&.fetch("tags", {})
   end
 
   def filtered_receipes
