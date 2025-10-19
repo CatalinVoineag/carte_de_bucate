@@ -114,8 +114,8 @@ accessories:
         - POSTGRES_PASSWORD
     directories:
       - data:/var/lib/postgresql/data
-    files:
-      - db/production_setup.sql:/docker-entrypoint-initdb.d/setup.sql
+    # files:
+    #   - db/production_setup.sql:/docker-entrypoint-initdb.d/setup.sql
 #   db:
 #     image: mysql:8.0
 #     host: 192.168.0.2
