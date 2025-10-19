@@ -51,6 +51,7 @@ env:
     DB_HOST: 127.0.0.1
     DB_PORT: 5432
     BROWSER: firefox
+    BROWSER_PATH: "/usr/bin/chromium-browser"
 
     # Set number of processes dedicated to Solid Queue (default: 1)
     # JOB_CONCURRENCY: 3
