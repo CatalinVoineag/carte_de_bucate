@@ -110,8 +110,8 @@ accessories:
         POSTGRES_DB: carte_de_bucate_production
         DB_HOST: 127.0.0.1
         DB_PORT: 5432
-      # secret:
-      #   - POSTGRES_PASSWORD
+      secret:
+        - POSTGRES_PASSWORD
     directories:
       - data:/var/lib/postgresql/data
     files:
