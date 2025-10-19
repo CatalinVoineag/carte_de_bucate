@@ -454,6 +454,7 @@ DEPENDENCIES
   capybara
   dartsass-rails
   debug
+  dotenv
   factory_bot_rails
   faraday
   ferrum

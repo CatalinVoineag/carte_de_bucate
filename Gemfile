@@ -64,6 +64,7 @@ group :development, :test do
   gem "launchy", "~> 2.4", ">= 2.4.3"
   gem "selenium-webdriver"
   gem "factory_bot_rails"
+  gem "dotenv"
 end
 
 group :development do

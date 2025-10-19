@@ -50,6 +50,7 @@ env:
     POSTGRES_DB: carte_de_bucate_production
     DB_HOST: 127.0.0.1
     DB_PORT: 5432
+    BROWSER: firefox
 
     # Set number of processes dedicated to Solid Queue (default: 1)
     # JOB_CONCURRENCY: 3
