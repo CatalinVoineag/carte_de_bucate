@@ -24,7 +24,7 @@ class ScraperOld
 
   def call
     attributes = { status: :published }
-    browser = Ferrum::Browser.new(browser_name: ENV.fetch("BROWSER", "chrome").to_sym)
+    browser = Ferrum::Browser.new
     browser.go_to(url)
 
     attributes.merge!(name(browser))
