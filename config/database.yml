@@ -89,13 +89,16 @@ production:
     database: carte_de_bucate_production
   cache:
     <<: *primary_production
+    url: <%= ENV['CACHE_URL'] %>
     database: carte_de_bucate_production_cache
     migrations_paths: db/cache_migrate
   queue:
     <<: *primary_production
+    url: <%= ENV['QUEUE_URL'] %>
     database: carte_de_bucate_production_queue
     migrations_paths: db/queue_migrate
   cable:
     <<: *primary_production
+    url: <%= ENV['CABLE_URL'] %>
     database: carte_de_bucate_production_cable
     migrations_paths: db/cable_migrate
