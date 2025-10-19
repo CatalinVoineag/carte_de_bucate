@@ -1,5 +1,5 @@
 # Name of your application. Used to uniquely configure containers.
-service: carte_de_bucate
+service: carteDeBucate
 
 # Name of the container image.
 image: dwarfi/carte_de_bucate
