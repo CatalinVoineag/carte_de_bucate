@@ -19,10 +19,14 @@ default: &default
   # https://guides.rubyonrails.org/configuring.html#database-pooling
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
-
 development:
-  <<: *default
-  database: carte_de_bucate_development
+  primary:
+    <<: *default
+    database: carte_de_bucate_development
+  queue:
+    <<: *default
+    database: carte_de_bucate_development_queue
+    migrations_paths: db/queue_migrate
 
   # The specified database role being used to connect to PostgreSQL.
   # To create additional roles in PostgreSQL see `$ createuser --help`.
