@@ -24,7 +24,7 @@ class ScraperOld
 
   def call
     attributes = { status: :published }
-    browser = Ferrum::Browser.new
+    browser = Ferrum::Browser.new(browser_options: { "no-sandbox": nil })
     browser.go_to(url)
 
     attributes.merge!(name(browser))
