@@ -9,7 +9,8 @@ module SavedReceipes
     end
 
     def create
-      @ingredients_form = IngredientsForm.new(ingredients_form_params)
+      @ingredients_form = IngredientsForm.new(my_receipe)
+      @ingredients_form.assign_attributes(ingredients_form_params)
 
       if @ingredients_form.save
         redirect_to root_path
@@ -23,13 +24,15 @@ module SavedReceipes
     def ingredients_form_params
       params.expect(
         saved_receipes_ingredients_form: [
-          :name,
-          :prep_time,
-          :cook_time,
-          :servings,
-          :description
-        ]
-      ).merge(global_receipe:)
+          receipe_ingredients_attributes: [ [
+            :id,
+            :quantity,
+            :unit,
+            :_destroy,
+            ingredient_attributes: [ :id, :name ]
+          ]
+        ] ]
+      )
     end
 
     def my_receipe

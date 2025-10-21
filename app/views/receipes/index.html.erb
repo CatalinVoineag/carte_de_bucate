@@ -51,7 +51,7 @@
     <% @filter_form.filtered_receipes.each do |receipe| %>
       <%= link_to receipe_path(receipe), data: { turbo_frame: "_top" } do %>
         <div>
-          <% if receipe.image.persisted? %> 
+          <% if receipe.image.attached? %> 
             <%= image_tag url_for(receipe.image), class: "img-thumbnail" %>
           <% end %> 
           <h2 class="header-m"><%= receipe.name %></h2>

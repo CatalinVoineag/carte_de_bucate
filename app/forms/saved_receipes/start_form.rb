@@ -3,8 +3,9 @@ module SavedReceipes
     include ActiveModel::Model
 
     attr_accessor :my_receipe, :name, :status, :prep_time, :cook_time,
-                       :servings, :description
+                       :servings, :description, :image
 
+    validates :image, presence: true
     validates :name, presence: true
     validates :prep_time, presence: true
     validates :cook_time, presence: true
@@ -25,7 +26,7 @@ module SavedReceipes
       return false unless valid?
 
       my_receipe.assign_attributes(
-        { name:, prep_time:, cook_time:, servings:, description:, status: }
+        { image:, name:, prep_time:, cook_time:, servings:, description:, status: }
       )
       my_receipe.save!
       my_receipe

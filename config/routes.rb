@@ -7,7 +7,6 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   resources :receipes
-  resources :save_receipes, only: [ :create, :destroy ]
 
   resources :saved_receipes, only: %i[index show], controller: "saved_receipes/index" do
     collection do

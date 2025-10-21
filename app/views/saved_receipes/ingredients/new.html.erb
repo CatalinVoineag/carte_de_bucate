@@ -3,7 +3,11 @@
 
 <h1>Ingredients</h1>
 
-<%= form_with(model: @ingredients_form.my_receipe, url: create_saved_receipes_path) do |form| %>
+<%= form_with(
+  model: @ingredients_form,
+  url: saved_receipe_ingredients_path,
+  data: { controller: 'nested-form', nested_form_wrapper_selector_value: '.nested-form-wrapper' } 
+) do |form| %>
   <% if @ingredients_form.errors.any? %>
     <div style="color: red">
       <h2><%= pluralize(@ingredients_form.errors.count, "error") %> prohibited this receipe from being saved:</h2>
@@ -18,7 +22,7 @@
 
   <template data-nested-form-target="template">
     <% record = ReceipeIngredient.new %> 
-    <% record.build_ingredient %> 
+    <% record.build_ingredient %>
     <%= form.fields_for :receipe_ingredients, record, child_index: 'NEW_RECORD' do |receipe_ingredient_form| %>
       <%= render "ingredient", receipe_ingredient_form: %>
     <% end %> 

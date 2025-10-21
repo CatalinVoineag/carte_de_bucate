@@ -40,6 +40,7 @@ module SavedReceipes
     def start_form_params
       params.expect(
         saved_receipes_start_form: [
+          :image,
           :name,
           :prep_time,
           :cook_time,
