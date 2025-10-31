@@ -61,7 +61,7 @@ group :development, :test do
 
   gem "rspec-rails", "~> 8.0.0"
   gem "capybara"
-  gem "launchy", "~> 2.4", ">= 2.4.3"
+  gem "launchy", "~> 3.1"
   gem "selenium-webdriver"
   gem "factory_bot_rails"
   gem "dotenv"
