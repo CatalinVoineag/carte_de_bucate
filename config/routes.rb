@@ -17,5 +17,6 @@ Rails.application.routes.draw do
     end
 
     resources :ingredients, only: %i[new create], controller: "saved_receipes/ingredients"
+    resources :instructions, only: %i[new create], controller: "saved_receipes/instructions"
   end
 end

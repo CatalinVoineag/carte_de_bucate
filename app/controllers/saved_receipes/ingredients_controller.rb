@@ -13,7 +13,7 @@ module SavedReceipes
       @ingredients_form.assign_attributes(ingredients_form_params)
 
       if @ingredients_form.save
-        redirect_to root_path
+        redirect_to new_saved_receipe_instruction_path(my_receipe)
       else
         render :new, status: :unprocessable_entity
       end

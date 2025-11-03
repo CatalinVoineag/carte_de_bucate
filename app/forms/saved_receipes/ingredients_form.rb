@@ -22,7 +22,6 @@ module SavedReceipes
       ActiveRecord::Base.transaction do
         my_receipe.receipe_ingredients = []
         my_receipe.receipe_ingredients_attributes = receipe_ingredients_attributes
-        my_receipe.status = :published
         my_receipe.save!
       end
     end

@@ -1,0 +1,41 @@
+<% content_for :title, "New receipe" %>
+<%= link_to "Back", new_saved_receipe_ingredient_path(@my_receipe) %>
+
+<h1>Instructions</h1>
+
+<%= form_with(
+  model: @instructions_form,
+  url: saved_receipe_instructions_path,
+  data: { controller: 'nested-form', nested_form_wrapper_selector_value: '.nested-form-wrapper', nested_form_target: 'form' },
+) do |form| %>
+  <% if @instructions_form.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(@instructions_form.errors.count, "error") %> prohibited this receipe from being saved:</h2>
+
+      <ul>
+        <% @instructions_form.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <template data-nested-form-target="template">
+    <%= form.fields_for :instructions, Instruction.new, child_index: 'NEW_RECORD' do |instruction_form| %>
+      <%= render "instruction", instruction_form: %>
+    <% end %> 
+  </template>
+
+  <%= form.fields_for :instructions do |instruction_form| %>
+    <%= render "instruction", instruction_form: %>
+  <% end %>
+
+  <div data-nested-form-target="target"></div>
+
+  <button type="button" data-action="nested-form#add">Add instruction</button>
+
+  <br>
+  <div>
+    <%= form.submit "Continue" %>
+  </div>
+<% end %>
