@@ -11,7 +11,7 @@
   <% end %> 
 
   <div>
-    <%= receipe_ingredient_form.label :quantity, style: "display: block" %>
+    <%= receipe_ingredient_form.label :quantity, style: "display: block", class: 'input_field' %>
     <%= receipe_ingredient_form.text_field :quantity %>
   </div>
 
@@ -20,7 +20,14 @@
     <%= receipe_ingredient_form.text_field :unit %>
   </div>
 
-  <button type="button" data-action="nested-form#remove">Remove ingredient</button>
+  <div>
+    <%= receipe_ingredient_form.label :notes, style: "display: block" %>
+    <%= receipe_ingredient_form.text_field :notes %>
+  </div>
+
+  <% unless receipe_ingredient_form.index == 0 %>
+    <button type="button" data-action="nested-form#remove">Remove ingredient</button>
+  <% end %> 
 
   <%= receipe_ingredient_form.hidden_field :_destroy %>
 </div>

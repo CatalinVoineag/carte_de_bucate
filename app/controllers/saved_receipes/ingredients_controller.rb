@@ -28,6 +28,7 @@ module SavedReceipes
             :id,
             :quantity,
             :unit,
+            :notes,
             :_destroy,
             ingredient_attributes: [ :id, :name ]
           ]

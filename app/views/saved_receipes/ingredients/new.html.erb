@@ -6,7 +6,7 @@
 <%= form_with(
   model: @ingredients_form,
   url: saved_receipe_ingredients_path,
-  data: { controller: 'nested-form', nested_form_wrapper_selector_value: '.nested-form-wrapper' } 
+  data: { controller: 'nested-form', nested_form_wrapper_selector_value: '.nested-form-wrapper', nested_form_target: 'form' },
 ) do |form| %>
   <% if @ingredients_form.errors.any? %>
     <div style="color: red">
