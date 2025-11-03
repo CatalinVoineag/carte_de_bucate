@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   resources :receipes
+  resources :save_receipes, only: [ :create, :destroy ]
 
   resources :saved_receipes, only: %i[index show], controller: "saved_receipes/index" do
     collection do
@@ -17,6 +18,6 @@ Rails.application.routes.draw do
     end
 
     resources :ingredients, only: %i[new create], controller: "saved_receipes/ingredients"
-    resources :instructions, only: %i[new create], controller: "saved_receipes/instructions"
+    resources :instructions, only: %i[new create], controller: "previous_teacher_trainings/dates", path: "training-dates"
   end
 end
