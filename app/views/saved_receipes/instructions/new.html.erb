@@ -4,16 +4,17 @@
 <h1>Instructions</h1>
 
 <%= form_with(
-  model: @instructions_form,
+  model: @my_receipe,
   url: saved_receipe_instructions_path,
+  method: :post,
   data: { controller: 'nested-form', nested_form_wrapper_selector_value: '.nested-form-wrapper', nested_form_target: 'form' },
 ) do |form| %>
-  <% if @instructions_form.errors.any? %>
+  <% if @my_receipe.errors.any? %>
     <div style="color: red">
-      <h2><%= pluralize(@instructions_form.errors.count, "error") %> prohibited this receipe from being saved:</h2>
+      <h2><%= pluralize(@my_receipe.errors.count, "error") %> prohibited this receipe from being saved:</h2>
 
       <ul>
-        <% @instructions_form.errors.each do |error| %>
+        <% @my_receipe.errors.each do |error| %>
           <li><%= error.full_message %></li>
         <% end %>
       </ul>

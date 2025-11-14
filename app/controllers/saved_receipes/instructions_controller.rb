@@ -3,15 +3,13 @@ module SavedReceipes
     before_action :my_receipe
 
     def new
-      @instructions_form = InstructionForm.new(my_receipe)
+      my_receipe.instructions.build if my_receipe.instructions.blank?
     end
 
     def create
-      @instructions_form = InstructionForm.new(my_receipe)
-      @instructions_form.assign_attributes(instructions_form_params)
-
-      if @instructions_form.save
-        redirect_to root_path
+      if my_receipe.update(instructions_form_params)
+        my_receipe.published!
+        redirect_to saved_receipes_path
       else
         render :new, status: :unprocessable_entity
       end
@@ -21,7 +19,7 @@ module SavedReceipes
 
     def instructions_form_params
       params.expect(
-        saved_receipes_instruction_form: [
+        my_receipe: [
           instructions_attributes: [ [
             :step,
             :body,
