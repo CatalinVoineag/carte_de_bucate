@@ -3,16 +3,14 @@ module SavedReceipes
     before_action :my_receipe
 
     def new
-      @receipe_ingredient = ReceipeIngredient.new
-      @receipe_ingredient.build_ingredient
-      @ingredients_form = IngredientsForm.new(my_receipe)
+      if my_receipe.receipe_ingredients.blank?
+        my_receipe.receipe_ingredients.build
+        my_receipe.receipe_ingredients.map(&:build_ingredient)
+      end
     end
 
     def create
-      @ingredients_form = IngredientsForm.new(my_receipe)
-      @ingredients_form.assign_attributes(ingredients_form_params)
-
-      if @ingredients_form.save
+      if my_receipe.update(ingredients_form_params)
         redirect_to new_saved_receipe_instruction_path(my_receipe)
       else
         render :new, status: :unprocessable_entity
@@ -23,7 +21,7 @@ module SavedReceipes
 
     def ingredients_form_params
       params.expect(
-        saved_receipes_ingredients_form: [
+        my_receipe: [
           receipe_ingredients_attributes: [ [
             :id,
             :quantity,

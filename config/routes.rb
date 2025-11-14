@@ -18,6 +18,6 @@ Rails.application.routes.draw do
     end
 
     resources :ingredients, only: %i[new create], controller: "saved_receipes/ingredients"
-    resources :instructions, only: %i[new create], controller: "previous_teacher_trainings/dates", path: "training-dates"
+    resources :instructions, only: %i[new create], controller: "saved_receipes/instructions"
   end
 end

@@ -7,8 +7,8 @@ class Receipe < ApplicationRecord
   has_many :instructions, -> { order(:step) }, dependent: :destroy
   has_one_attached :image
 
-  accepts_nested_attributes_for :receipe_ingredients, reject_if: :all_blank, allow_destroy: true
-  accepts_nested_attributes_for :instructions, reject_if: :all_blank, allow_destroy: true
+  accepts_nested_attributes_for :receipe_ingredients, allow_destroy: true
+  accepts_nested_attributes_for :instructions, allow_destroy: true
 
   enum :status, {
     draft: "draft",

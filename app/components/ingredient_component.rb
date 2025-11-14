@@ -14,18 +14,12 @@ class IngredientComponent < ViewComponent::Base
   def format
     if receipe_ingredient.notes.present?
       notes = receipe_ingredient.notes
+      notes.gsub!("${}", receipe_ingredient.ingredient_name)
 
-      if notes.include?(receipe_ingredient.ingredient_name)
-        notes.gsub!("${}", receipe_ingredient.ingredient_name)
-
-        "#{receipe_ingredient.quantity}#{receipe_ingredient.unit} \
-          #{notes}"
-      else
-        "#{receipe_ingredient.quantity}#{receipe_ingredient.unit} \
-          #{receipe_ingredient.ingredient&.name} #{notes}"
-      end
+      "#{receipe_ingredient.quantity}#{receipe_ingredient&.unit} \
+        #{notes}"
     else
-      "#{receipe_ingredient.quantity}#{receipe_ingredient.unit} \
+      "#{receipe_ingredient.quantity}#{receipe_ingredient&.unit} \
         #{receipe_ingredient.ingredient&.name}"
     end
   end

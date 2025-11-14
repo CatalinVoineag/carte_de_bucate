@@ -19,7 +19,7 @@ module ReceipeService
         dup.user_id = user.id
         dup.global_receipe_id = receipe.id
         dup.image.attach(receipe.image.blob)
-        dup.ingredients = receipe.ingredients
+        dup.receipe_ingredients = receipe.receipe_ingredients.map(&:dup)
         dup.instructions = receipe.instructions.map(&:dup)
         dup.save
       end
