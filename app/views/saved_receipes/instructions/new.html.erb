@@ -1,42 +1,49 @@
 <% content_for :title, "New receipe" %>
-<%= link_to "Back", new_saved_receipe_ingredient_path(@my_receipe) %>
+<%= govuk_back_link href: new_saved_receipe_ingredient_path(@my_receipe) %>
 
-<h1>Instructions</h1>
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds counter">
+    <h1 class="govuk-header-l">Instructions</h1>
 
-<%= form_with(
-  model: @my_receipe,
-  url: saved_receipe_instructions_path,
-  method: :post,
-  data: { controller: 'nested-form', nested_form_wrapper_selector_value: '.nested-form-wrapper', nested_form_target: 'form' },
-) do |form| %>
-  <% if @my_receipe.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(@my_receipe.errors.count, "error") %> prohibited this receipe from being saved:</h2>
+    <%= form_with(
+      model: @my_receipe,
+      url: saved_receipe_instructions_path,
+      method: :post,
+      data: { controller: 'nested-form', nested_form_wrapper_selector_value: '.nested-form-wrapper', nested_form_target: 'form' },
+    ) do |form| %>
+      <% if @my_receipe.errors.any? %>
+        <div style="color: red">
+          <h2><%= pluralize(@my_receipe.errors.count, "error") %> prohibited this receipe from being saved:</h2>
 
-      <ul>
-        <% @my_receipe.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+          <ul>
+            <% @my_receipe.errors.each do |error| %>
+              <li><%= error.full_message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
 
-  <template data-nested-form-target="template">
-    <%= form.fields_for :instructions, Instruction.new, child_index: 'NEW_RECORD' do |instruction_form| %>
-      <%= render "instruction", instruction_form: %>
-    <% end %> 
-  </template>
+      <template data-nested-form-target="template">
+        <%= form.fields_for :instructions, Instruction.new, child_index: 'NEW_RECORD' do |instruction_form| %>
+          <%= render "instruction", instruction_form: %>
+        <% end %> 
+      </template>
 
-  <%= form.fields_for :instructions do |instruction_form| %>
-    <%= render "instruction", instruction_form: %>
-  <% end %>
+      <%= form.fields_for :instructions do |instruction_form| %>
+        <%= render "instruction", instruction_form: %>
+      <% end %>
 
-  <div data-nested-form-target="target"></div>
+      <div data-nested-form-target="target"></div>
 
-  <button type="button" data-action="nested-form#add">Add instruction</button>
+      <%= govuk_button_link_to(
+        "Add instruction",
+        secondary: true,
+        class: "govuk-!-margin-top-4",
+        data: { action: "nested-form#add" },
+      ) %>
+      <br>
 
-  <br>
-  <div>
-    <%= form.submit "Continue" %>
+      <%= form.govuk_submit "Continue" %>
+    <% end %>
   </div>
-<% end %>
+</div>

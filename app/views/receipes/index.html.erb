@@ -47,18 +47,20 @@
 <% end %> 
 
 <%= turbo_frame_tag "receipe-table" do %> 
-  <div class="grid receipe-grid margin-top-15">
+  <div class="govuk-grid-row">
     <% @filter_form.filtered_receipes.each do |receipe| %>
-      <%= link_to receipe_path(receipe), data: { turbo_frame: "_top" } do %>
-        <div>
-          <% if receipe.image.attached? %> 
-            <%= image_tag url_for(receipe.image), class: "img-thumbnail" %>
-          <% end %> 
-          <h2 class="header-m"><%= receipe.name %></h2>
-        </div>
-      <% end %> 
+      <div class="govuk-grid-column-one-third">
+        <%= link_to receipe_path(receipe), class: 'no-underline', data: { turbo_frame: "_top" } do %>
+          <div>
+            <% if receipe.image.attached? %> 
+              <%= image_tag url_for(receipe.image) %>
+            <% end %> 
+            <h2 class="govuk-heading-m"><%= receipe.name %></h2>
+          </div>
+        <% end %> 
+      </div>
     <% end %>
   </div>
 <% end %> 
 
-<%= link_to "New receipe", new_receipe_path %>
+<%= govuk_link_to "New receipe", new_receipe_path %>

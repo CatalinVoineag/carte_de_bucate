@@ -30,6 +30,9 @@ gem "solid_cable"
 
 gem "awesome_print"
 
+gem "govuk-components"
+gem "govuk_design_system_formbuilder"
+
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
 

@@ -22,9 +22,10 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
-    <div class="container">
-      <%= render 'navigation' %> 
+  <body class="app-template">
+    <%= render 'navigation' %> 
+
+    <div class="govuk-width-container">
       <%= yield %>
     </div>
   </body>

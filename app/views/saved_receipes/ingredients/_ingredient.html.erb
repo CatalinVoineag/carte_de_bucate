@@ -1,32 +1,29 @@
 <div class="nested-form-wrapper" data-new-record="<%= receipe_ingredient_form.object.new_record? %>">
+  <h2 class="govuk-header-m">
+    Ingredient <span class="record-counter"></span>
+  </h2>
+
   <%= receipe_ingredient_form.hidden_field :id %> 
 
   <%= receipe_ingredient_form.fields_for :ingredient do |ingredient_form| %>
     <%= ingredient_form.hidden_field :id %> 
 
-    <div>
-      <%= ingredient_form.label :name, style: "display: block" %>
-      <%= ingredient_form.text_field :name %>
-    </div>
+    <%= ingredient_form.govuk_text_field :name, label: { text: "Name" } %>
   <% end %> 
 
-  <div>
-    <%= receipe_ingredient_form.label :quantity, style: "display: block", class: 'input_field' %>
-    <%= receipe_ingredient_form.text_field :quantity %>
-  </div>
+  <%= receipe_ingredient_form.govuk_number_field :quantity, label: { text: "Quantity" } %>
 
-  <div>
-    <%= receipe_ingredient_form.label :unit, style: "display: block" %>
-    <%= receipe_ingredient_form.text_field :unit %>
-  </div>
+  <%= receipe_ingredient_form.govuk_text_field :unit, label: { text: "Unit" } %>
 
-  <div>
-    <%= receipe_ingredient_form.label :notes, style: "display: block" %>
-    <%= receipe_ingredient_form.text_field :notes %>
-  </div>
+  <%= receipe_ingredient_form.govuk_text_field :notes, label: { text: "Notes" } %>
 
   <% unless receipe_ingredient_form.index == 0 %>
-    <button type="button" data-action="nested-form#remove">Remove ingredient</button>
+    <%= govuk_button_to(
+      "Remove ingredient",
+      secondary: true,
+      class: "govuk-!-margin-top-2",
+      data: { action: "nested-form#remove" },
+    ) %>
   <% end %> 
 
   <%= receipe_ingredient_form.hidden_field :_destroy %>

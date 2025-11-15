@@ -1,67 +1,53 @@
-<p style="color: green"><%= notice %></p>
-
-<div>
-  <p><%= @receipe.name %></p>
-
-  <div class="grid receipe-info-grid">
-    <div>
-      <% if @receipe.image.present? %> 
-        <%= image_tag url_for(@receipe.image), class: "img-thumbnail" %>
-      <% end %> 
-    </div>
-
-    <div class="grid receipe-header-info">
-      <div id="save_receipe">
-        <%= render SaveReceipeComponent.new(receipe: @receipe, user: current_user) %> 
-      </div>
-
-      <div>
-        <p>
-          <strong>Prep time:</strong>
-          <%= @receipe.prep_time %>
-        </p>
-
-        <p>
-          <strong>Cook time:</strong>
-          <%= @receipe.cook_time %>
-        </p>
-      </div>
-
-      <div>
-        <p>
-          <strong>Servings:</strong>
-          <%= @receipe.servings %>
-        </p>
-
-        <p>
-          <strong>Tags:</strong>
-          <%= @receipe.tags&.join(", ") %>
-        </p>
-      </div>
-    </div>
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <h1 class="govuk-header-l"><%= @receipe.name %></h1>
   </div>
 
-  <p><%= @receipe.description %></p>
+  <div class="govuk-grid-column-two-thirds">
+    <% if @receipe.image.present? %> 
+      <%= image_tag url_for(@receipe.image), class: "img-thumbnail" %>
+    <% end %> 
+  </div>
 
-  <div class="grid receipe-instruction-grid">
-    <div>
-      <p>
-        <strong>Ingredients:</strong>
-      </p>
+  <div class="govuk-grid-column-one-third">
+    <p class="govuk-body"><strong>Prep time:</strong> <%= @receipe.prep_time %></p>
+    <p class="govuk-body"><strong>Cook time:</strong> <%= @receipe.cook_time %></p>
+    <p class="govuk-body"><strong>Servings:</strong> <%= @receipe.servings %></p>
+    <p class="govuk-body"><strong>Tags:</strong> <%= @receipe.tags&.join(", ") %></p>
 
+    <div id="save_receipe">
+      <%= render SaveReceipeComponent.new(receipe: @receipe, user: current_user) %> 
+    </div>
+  </div>
+</div>
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-full govuk-!-margin-top-6">
+    <p class="govuk-body"><%= @receipe.description %></p>
+  </div>
+
+  <div class="govuk-grid-column-one-third">
+    <%= tag.p class: "govuk-body-l" do %> 
+      <strong>Ingredients:</strong> 
+    <% end %> 
+
+    <%= govuk_list spaced: true do %>
       <% @receipe.receipe_ingredients.each do |receipe_ingredient| %>
-        <%= render IngredientComponent.new(receipe_ingredient:) %> 
+        <%= tag.li render IngredientComponent.new(receipe_ingredient:) %>
       <% end %> 
-    </div>
+    <% end %>
+  </div>
 
-    <div>
-      <p><strong>Instructions:</strong></p>
-      <ul class="default-list">
-        <% @receipe.instructions.each do |instruction| %>
-          <li><%= "#{instruction.step += 1}. #{instruction.body}" %></li>
-        <% end %> 
-      </ul>
-    </div>
+  <div class="govuk-grid-column-two-thirds">
+    <%= tag.p class: "govuk-body-l" do %> 
+      <strong>Instructions:</strong> 
+    <% end %> 
+
+    <%= govuk_list type: :number, spaced: true do %>
+      <% @receipe.instructions.each do |instruction| %>
+        <%= tag.li instruction.body %>
+      <% end %> 
+    <% end %>
   </div>
 
   <br>

@@ -1,13 +1,19 @@
 <div class="nested-form-wrapper" data-new-record="<%= instruction_form.object.new_record? %>">
+  <h2 class="govuk-header-m">
+    Instruction <span class="record-counter"></span>
+  </h2>
+
   <%= instruction_form.hidden_field :step, value: instruction_form.index %>
 
-  <div>
-    <%= instruction_form.label :body, style: "display: block", class: 'input_field' %>
-    <%= instruction_form.text_field :body %>
-  </div>
+  <%= instruction_form.govuk_text_area :body, label: { text: 'Description' }, rows: 5 %>
 
   <% unless instruction_form.index == 0 %>
-    <button type="button" data-action="nested-form#remove">Remove instruction</button>
+    <%= govuk_button_to(
+      "Remove instruction",
+      secondary: true,
+      class: "govuk-!-margin-top-2",
+      data: { action: "nested-form#remove" },
+    ) %>
   <% end %> 
 
   <%= instruction_form.hidden_field :_destroy %>

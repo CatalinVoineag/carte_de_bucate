@@ -11,39 +11,21 @@
     </div>
   <% end %>
 
+  <%= form.govuk_file_field(
+    :image,
+    label: { text: 'Image' },
+    javascript: true
+  ) %> 
 
-  <div>
-    <%= form.label :image, style: "display: block" %>
-    <%= form.file_field :image %>
-  </div>
+  <%= form.govuk_text_field :name, label: { text: "Name" } %>
 
-  <div>
-    <%= form.label :name, style: "display: block" %>
-    <%= form.text_field :name %>
-  </div>
+  <%= form.govuk_text_field :prep_time, label: { text: "Prep time" } %>
 
-  <div>
-    <%= form.label :prep_time, style: "display: block" %>
-    <%= form.text_field :prep_time %>
-  </div>
+  <%= form.govuk_text_field :cook_time, label: { text: "Cook time" } %>
 
-  <div>
-    <%= form.label :cook_time, style: "display: block" %>
-    <%= form.text_field :cook_time %>
-  </div>
+  <%= form.govuk_text_field :servings, label: { text: "Servings" } %>
 
-  <div>
-    <%= form.label :servings, style: "display: block" %>
-    <%= form.text_field :servings %>
-  </div>
+  <%= form.govuk_text_area :description, label: { text: 'Description' }, rows: 7 %>
 
-  <div>
-    <%= form.label :description, style: "display: block" %>
-    <%= form.textarea :description %>
-  </div>
-
-  <br>
-  <div>
-    <%= form.submit "Continue" %>
-  </div>
+  <%= form.govuk_submit "Continue" %>
 <% end %>

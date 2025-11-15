@@ -6,7 +6,8 @@ class ReceipeIngredient < ApplicationRecord
 
   accepts_nested_attributes_for :ingredient, allow_destroy: true
 
-  validates :quantity, presence: true
+  # validates :quantity, presence: true
+  # there are recipes that don't have quantities
 
   delegate :name, to: :ingredient, prefix: true
 end

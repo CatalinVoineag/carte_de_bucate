@@ -1,6 +1,10 @@
 <% content_for :title, "New receipe" %>
-<%= link_to "Back", saved_receipes_path %>
+<%= govuk_back_link href: saved_receipes_path %>
 
-<h1>New receipe</h1>
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <h1 class="govuk-header-l">New receipe</h1>
 
-<%= render "form", model: @start_form, url: update_saved_receipes_path, method: :put %> 
+    <%= render "form", model: @start_form, url: update_saved_receipes_path, method: :put %> 
+  </div>
+</div>
