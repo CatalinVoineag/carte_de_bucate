@@ -39,3 +39,6 @@
 .byebug_history
 
 /config/credentials/production.key
+
+/node_modules
+/yarn-error.log
