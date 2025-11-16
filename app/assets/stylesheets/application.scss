@@ -39,12 +39,13 @@
 // @import "navigation";
 // @import "typography";
 // @import "button";
+
 @import "govuk-frontend/dist/govuk/all";
 @import "receipes/style";
 
-.app-template {
+.govuk-template__body {
   .govuk-width-container {
-    @include govuk-width-container(1200px);
+    @include govuk-width-container(1600px);
   }
 }
 
@@ -65,4 +66,177 @@
 img {
   max-width: 100%;
   display: block;
+}
+
+
+
+
+.moj-filter, .moj-filter__header {
+  background-color: govuk-colour("light-grey");
+}
+
+.moj-filter-layout__content {
+  overflow-x: hidden;
+
+  .moj-action-bar {
+    height: 60px;
+  }
+}
+
+.moj-action-bar__filter {
+  @include govuk-media-query($from: desktop) {
+    display: none;
+  }
+}
+
+.mobile-only-search {
+  @include govuk-media-query($from: desktop) {
+    display: none;
+  }
+}
+
+.desktop-only-search {
+  @include govuk-media-query($until: desktop) {
+    display: none;
+  }
+}
+
+.filter-toggle-button {
+  margin-bottom: govuk-spacing(1);
+  @include govuk-media-query($from: desktop) {
+    display: none;
+  }
+}
+
+.moj-action-bar__filter::after {
+  background: none;
+}
+
+@media (min-width: 48.0625em) {
+  .moj-filter-layout__filter {
+    max-width: 310px;
+
+    margin-right: govuk-spacing(6);
+  }
+}
+
+.moj-filter__header {
+  padding-top: govuk-spacing(2);
+  padding-right: govuk-spacing(3);
+  padding-bottom: govuk-spacing(2);
+  padding-left: govuk-spacing(3);
+
+  border: 1px solid $govuk-border-colour;
+  border-bottom: 0;
+  box-shadow: none;
+}
+
+.moj-filter__selected {
+  padding-top: govuk-spacing(5);
+  padding-right: govuk-spacing(3);
+  padding-bottom: govuk-spacing(5);
+  padding-left: govuk-spacing(3);
+
+  border: 1px solid $govuk-border-colour;
+  border-top: 0;
+  border-bottom: 0;
+  box-shadow: none;
+}
+
+.moj-filter__options {
+  padding: govuk-spacing(4) govuk-spacing(3);
+
+  box-shadow: none;
+}
+
+.moj-pagination__list {
+  padding-left: 3px;
+}
+
+.app-filter {
+  @include govuk-media-query($from: tablet) {
+    // stylelint-disable declaration-no-important
+    position: relative !important;
+    // stylelint-enable declaration-no-important
+
+    margin-bottom: govuk-spacing(3);
+  }
+
+  // Fix for fixed position of layout filters for mobile
+  @include govuk-media-query($from: mobile) {
+    // stylelint-disable declaration-no-important
+    position: relative !important;
+    // stylelint-enable declaration-no-important
+  }
+}
+
+// Apply GOV.UK focus styles - only needed with js.
+.js-enabled .app-filter:focus {
+  outline: $govuk-focus-width solid $govuk-focus-colour;
+}
+
+// Fix for focus issue - see https://github.com/DFE-Digital/apply-for-teacher-training/pull/2640
+
+// We're catching the focus on a second element rather than having the filter component itself flash with focus when checkbox labels are clicked.
+.moj-filter__content:focus {
+  outline: none;
+}
+
+.moj-filter__tag:focus {
+  text-decoration: none;
+
+  outline: 3px solid transparent;
+
+  background-color: govuk-colour("yellow");
+  box-shadow: 0 4px govuk-colour("black");
+}
+
+.moj-pagination__item--prev .moj-pagination__link::before {
+  margin-right: 1px;
+}
+
+.moj-pagination__item--next .moj-pagination__link::after {
+  margin-left: 1px;
+}
+
+.app-search {
+  form {
+    display: flex;
+
+    align-items: flex-end;
+  }
+
+  .govuk-form-group {
+    flex: 1;
+
+    margin-bottom: 0;
+
+    vertical-align: top;
+  }
+
+  .app-search__button {
+    position: relative;
+    top: -2px;
+
+    display: inline-block;
+
+    width: auto;
+
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 10px;
+
+    vertical-align: bottom;
+  }
+}
+
+.filter-group {
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+
+  border-bottom: 1px solid $govuk-border-colour;
+}
+
+.moj-filter .govuk-checkboxes__label::before {
+  background-color: govuk-colour("white");
 }

@@ -1,66 +1,116 @@
 <p style="color: green"><%= notice %></p>
 <% content_for :title, "Receipes" %>
 
-<%= form_with(
-  model: @filter_form,
-  url: "",
-  method: :get,
-  scope: :filters,
-  data: {
-    turbo_frame: "receipe-table",
-    controller: "auto-submit",
-    auto_submit_target: "form"
-  }
-) do |form| %> 
-  <div class="margin-bottom-10">
-    <%= form.label :query, "Search receipe" %> 
-  </div>
-  <div>
-    <%= form.search_field(
-      :receipe_name,
-      placeholder: "Receipe name",
-      data: { auto_submit_target: "receipeInput" },
-      size: 30
-    ) %> 
-  </div>
 
-  <br> 
-  <div data-auto-submit-target="tagsInput">
-    <%= form.collection_checkboxes(:tags, @tags, :to_s, :to_s) %>
-  </div>
+<%# <%= render FilterComponent.new(params:, filter: @filter_form) do %> %>
+<%#   MY FILTERS %>
+<%#   MY FILTERS %>
+<%#   MY FILTERS %>
+<%#   MY FILTERS %>
+<%#   MY FILTERS %>
+<%# <% end %>  %>
 
-  <br> 
-  <br> 
-  <br> 
 
-  <div class="margin-bottom-10">
-    <%= form.label :ingredient_query, "Search by ingredients" %> 
-  </div>
-  <div>
-    <%= form.text_area(
-      :ingredients,
-      placeholder: "Add a comma between ingredients",
-      data: { auto_submit_target: "ingredientInput" },
-      size: "30x5"
-    ) %> 
-  </div>
-<% end %> 
+<div class="govuk-grid-row">
+  <div class="moj-filter-layout__filter app-filter govuk-grid-column-one-third">
+    <div class="moj-filter">
+      <div class="moj-filter__header">
+        <div class="moj-filter__header-title">
+          <h2 class="govuk-heading-m">Filters</h2>
+        </div>
+      </div>
 
-<%= turbo_frame_tag "receipe-table" do %> 
-  <div class="govuk-grid-row">
-    <% @filter_form.filtered_receipes.each do |receipe| %>
-      <div class="govuk-grid-column-one-third">
-        <%= link_to receipe_path(receipe), class: 'no-underline', data: { turbo_frame: "_top" } do %>
-          <div>
-            <% if receipe.image.attached? %> 
-              <%= image_tag url_for(receipe.image) %>
-            <% end %> 
-            <h2 class="govuk-heading-m"><%= receipe.name %></h2>
+      <div class="moj-filter__content" tabindex="-1">
+        <%= form_with(
+          model: @filter_form,
+          url: "",
+          method: :get,
+          scope: :filters,
+          data: {
+            turbo_frame: "receipe-table",
+            controller: "auto-submit",
+            auto_submit_target: "form"
+          }
+        ) do |form| %> 
+          <div class="moj-filter__options">
+            <div class="govuk-form-group filter-group">
+              
+              <%= form.govuk_text_field(
+                :query,
+                label: { text: "Search receipe" },
+                data: { auto_submit_target: "receipeInput" },
+              ) %>
+
+              <%# form.label :query, "Search receipe" %> 
+
+              <%# form.search_field(
+                :receipe_name,
+                placeholder: "Receipe name",
+                data: { auto_submit_target: "receipeInput" },
+                size: 30
+              ) %> 
+
+              <div class="govuk-form-group filter-group" data-auto-submit-target="tagsInput">
+                <%= form.govuk_collection_check_boxes(
+                  :tags,
+                  @tags,
+                  :to_s,
+                  :to_s,
+                  legend: { text: 'Tags', size: 's' },
+                  small: true,
+                ) %>
+              </div>
+
+              <div data-auto-submit-target="tagsInput">
+                <%# form.collection_checkboxes(:tags, @tags, :to_s, :to_s) %>
+              </div>
+
+
+              <%= form.govuk_text_area(
+                :ingredient_query,
+                label: { text: "Search by ingredients", hint: "Add a comma between ingredients" },
+                data: { auto_submit_target: "ingredientInput" },
+                rows: 5,
+              ) %> 
+
+              <%# form.label :ingredient_query, "Search by ingredients" %> 
+              <%# form.text_area(
+                :ingredients,
+                placeholder: "Add a comma between ingredients",
+                data: { auto_submit_target: "ingredientInput" },
+                size: "30x5"
+              ) %> 
+            </div>
           </div>
         <% end %> 
       </div>
-    <% end %>
+    </div>
   </div>
-<% end %> 
+  <div class='moj-filter-layout__content'>
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-full">
+        <div class="filter-toggle-button">
+        </div>
+      </div>
+    </div>
+
+    <%= turbo_frame_tag "receipe-table" do %> 
+      <div class="govuk-grid-row">
+        <% @filter_form.filtered_receipes.each do |receipe| %>
+          <div class="govuk-grid-column-one-third">
+            <%= link_to receipe_path(receipe), class: 'no-underline', data: { turbo_frame: "_top" } do %>
+              <div>
+                <% if receipe.image.attached? %> 
+                  <%= image_tag url_for(receipe.image) %>
+                <% end %> 
+                <h2 class="govuk-heading-m"><%= receipe.name %></h2>
+              </div>
+            <% end %> 
+          </div>
+        <% end %>
+      </div>
+    <% end %> 
+  </div>
+</div>
 
 <%= govuk_link_to "New receipe", new_receipe_path %>
