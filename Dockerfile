@@ -20,7 +20,10 @@ RUN apt-get update -qq && \
     apt-get install -y chromium chromium-driver fonts-liberation libasound2 libatk-bridge2.0-0 \
     libatk1.0-0 libcups2 libdbus-1-3 libdrm2 libgbm1 libgtk-3-0 libnspr4 libnss3 libu2f-udev \
     libx11-xcb1 libxcomposite1 libxdamage1 libxfixes3 libxrandr2 libxshmfence1 xdg-utils && \
-    rm -rf /var/lib/apt/lists /var/cache/apt/archives
+    rm -rf /var/lib/apt/lists /var/cache/apt/archives && \
+    url -sL https://deb.nodesource.com/setup_4.x | bash && \
+    apt-get install nodejs && node -v && npm -v && npm install && \
+    npm install govuk-frontend --save
 
 # Set production environment
 ENV RAILS_ENV="production" \
