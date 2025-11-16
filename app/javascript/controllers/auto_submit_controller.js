@@ -5,7 +5,7 @@ export default class extends Controller {
   static targets = ["receipeInput", "tagsInput", "ingredientInput", "form"]
 
   connect() {
-    this.debounceSubmit = debounce(() => this.submit(this.formTarget), 200)
+    this.debounceSubmit = debounce(() => this.submit(this.formTarget), 300)
     this.receipeInputTarget.addEventListener("input", this.debounceSubmit);
     this.tagsInputTarget.addEventListener("click", this.debounceSubmit);
     this.ingredientInputTarget.addEventListener("input", this.debounceSubmit);
