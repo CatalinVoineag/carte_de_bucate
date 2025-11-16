@@ -33,6 +33,8 @@ RUN npm install govuk-frontend --save
 COPY package.json package-lock.json ./
 RUN npm install
 
+RUN npm install --global yarn
+
 # Set production environment
 ENV RAILS_ENV="production" \
     BUNDLE_DEPLOYMENT="1" \
