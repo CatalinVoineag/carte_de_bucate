@@ -1,68 +1,77 @@
 <p style="color: green"><%= notice %></p>
 <% content_for :title, "My Receipes" %>
 
-<%= form_with(
-  model: @filter_form,
-  url: "",
-  method: :get,
-  scope: :filters,
-  data: {
-    turbo_frame: "my-receipes",
-    controller: "auto-submit",
-    auto_submit_target: "form"
-  }
-) do |form| %> 
-  <div class="margin-bottom-10">
-    <%= form.label :query, "Search receipe" %> 
-  </div>
-  <div>
-    <%= form.search_field(
-      :receipe_name,
-      placeholder: "Receipe name",
-      data: { auto_submit_target: "receipeInput" },
-      size: 30
-    ) %> 
-  </div>
+<div class="govuk-grid-row">
+  <div class="moj-filter-layout__filter app-filter govuk-grid-column-one-third govuk-!-margin-bottom-6">
+    <div class="moj-filter">
+      <div class="moj-filter__header">
+        <div class="moj-filter__header-title">
+          <h2 class="govuk-heading-m">Filters</h2>
+        </div>
+      </div>
 
-  <br> 
-  <div data-auto-submit-target="tagsInput">
-    <%= form.collection_checkboxes(:tags, @tags, :to_s, :to_s) %>
-  </div>
+      <div class="moj-filter__content" tabindex="-1">
+        <%= form_with(
+          model: @filter_form,
+          url: "",
+          method: :get,
+          scope: :filters,
+          data: {
+            turbo_frame: "receipe-table",
+            controller: "auto-submit",
+            auto_submit_target: "form"
+          }
+        ) do |form| %> 
+          <div class="moj-filter__options">
+            <div class="govuk-form-group filter-group">
+              <%= form.govuk_text_field(
+                :receipe_name,
+                label: { text: "Search receipe" },
+                data: { auto_submit_target: "receipeInput" },
+              ) %>
 
-  <br> 
-  <br> 
-  <br> 
+              <div class="govuk-form-group filter-group" data-auto-submit-target="tagsInput">
+                <%= form.govuk_collection_check_boxes(
+                  :tags,
+                  @tags,
+                  :to_s,
+                  :to_s,
+                  legend: { text: 'Tags', size: 's' },
+                  small: true,
+                ) %>
+              </div>
 
-  <div class="margin-bottom-10">
-    <%= form.label :ingredient_query, "Search by ingredients" %> 
-  </div>
-  <div>
-    <%= form.text_area(
-      :ingredients,
-      placeholder: "Add a comma between ingredients",
-      data: { auto_submit_target: "ingredientInput" },
-      size: "30x5"
-    ) %> 
-  </div>
-
-  <%= form.hidden_field :remove_filters, value: @ingredients_query.blank? && @receipe_name_query.blank? %>
-<% end %> 
-
-<%= turbo_frame_tag "my-receipes" do %> 
-  <div class="govuk-grid-row">
-    <% @filter_form.filtered_receipes.each do |receipe| %>
-      <div class="govuk-grid-column-one-third">
-        <%= link_to saved_receipe_path(receipe), data: { turbo_frame: "_top" } do %>
-          <div>
-            <% if receipe.image.attached? %> 
-              <%= image_tag url_for(receipe.image) %>
-            <% end %> 
-            <h2 class="govuk-heading-m"><%= receipe.name %></h2>
+              <%= form.govuk_text_area(
+                :ingredients,
+                label: { text: "Search by ingredients", hint: "Add a comma between ingredients" },
+                data: { auto_submit_target: "ingredientInput" },
+                rows: 5,
+              ) %> 
+            </div>
           </div>
         <% end %> 
       </div>
-    <% end %>
+    </div>
   </div>
-<% end %> 
 
-<%= link_to "Create new receipe", start_saved_receipes_path %>
+  <div class='moj-filter-layout__content'>
+    <%= turbo_frame_tag "my-receipes" do %> 
+      <div class="govuk-grid-row">
+        <% @filter_form.filtered_receipes.each do |receipe| %>
+          <div class="govuk-grid-column-one-third">
+            <%= link_to saved_receipe_path(receipe), data: { turbo_frame: "_top" } do %>
+              <div>
+                <% if receipe.image.attached? %> 
+                  <%= image_tag url_for(receipe.image) %>
+                <% end %> 
+                <h2 class="govuk-heading-m"><%= receipe.name %></h2>
+              </div>
+            <% end %> 
+          </div>
+        <% end %>
+      </div>
+    <% end %> 
+  </div>
+</div>
+
+<%= govuk_link_to "Create new receipe", start_saved_receipes_path %>

@@ -1,44 +1,12 @@
-// :root {
-//   --dark-background-color: #181a1b;
-//   --dark-text-color: #e8e6e3;
-//   --darkreader-border: #363b3d;
-// }
-//
-// body {
-//   background-color: var(--dark-background-color);
-// }
-//
-// p, h1, h2, h3, h4, h5, a, li, span, label {
-//   color: var(--dark-text-color);
-// }
-//
-// .container {
-//   margin: auto;
-//   max-width: 1280px;
-// }
-//
-//
-// .grid {
-//   display: grid;
-// }
-//
-// .field_with_errors label {
-//   color: red;  
-// }
-//
-// .field_with_errors input, .field_with_errors textarea {
-//   border: 2px solid red; 
-// }
-//
-// @media (max-width: 700px) {
-//   body { padding: 1rem; }
-// }
-//
 // @import "utility";
 // @import "header";
 // @import "navigation";
 // @import "typography";
 // @import "button";
+
+$govuk-global-styles: true;
+$govuk-new-link-styles: true;
+$govuk-assets-path: "/";
 
 @import "govuk-frontend/dist/govuk/all";
 @import "receipes/style";
