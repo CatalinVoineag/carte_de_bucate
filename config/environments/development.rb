@@ -1,8 +1,7 @@
 require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
-  MissionControl::Jobs.http_basic_auth_user = "dev"
-  MissionControl::Jobs.http_basic_auth_password = "secret"
+  config.mission_control.jobs.http_basic_auth_enabled = false
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Make code changes take effect immediately without server restart.
