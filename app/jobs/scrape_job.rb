@@ -4,7 +4,7 @@ class ScrapeJob < ApplicationJob
   self.queue_adapter = :solid_queue
 
   def perform(url:, which_page:)
-    browser = Ferrum::Browser.new
+    browser = Ferrum::Browser.new(browser_options: { "no-sandbox": nil })
     page = browser.create_page
     page.go_to(url)
 
