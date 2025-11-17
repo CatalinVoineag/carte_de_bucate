@@ -6,6 +6,7 @@ module SavedReceipes
       @filter_form = ReceipeFilterForm.new(params:, receipe_class: MyReceipe)
       # Cache this
       @tags = GlobalReceipe.pluck(:tags).flatten.uniq
+      @pagy, @receipes = pagy(@filter_form.filtered_receipes)
     end
 
     def show; end

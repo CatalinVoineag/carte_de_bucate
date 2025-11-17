@@ -57,7 +57,7 @@
   <div class='moj-filter-layout__content'>
     <%= turbo_frame_tag "receipe-table" do %> 
       <div class="govuk-grid-row">
-        <% @filter_form.filtered_receipes.each do |receipe| %>
+        <% @receipes.each do |receipe| %>
           <div class="govuk-grid-column-one-third">
             <%= link_to receipe_path(receipe), class: 'no-underline', data: { turbo_frame: "_top" } do %>
               <div>
@@ -69,7 +69,10 @@
             <% end %> 
           </div>
         <% end %>
+
       </div>
     <% end %> 
+
+    <%= govuk_pagination(pagy: @pagy) %>
   </div>
 </div>

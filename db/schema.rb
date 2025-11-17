@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_12_131057) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_17_163605) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
@@ -85,6 +85,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_12_131057) do
     t.string "type", null: false
     t.bigint "global_receipe_id"
     t.string "status", null: false
+    t.string "url"
     t.index ["global_receipe_id"], name: "index_receipes_on_global_receipe_id"
     t.index ["user_id"], name: "index_receipes_on_user_id"
   end

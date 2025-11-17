@@ -3,9 +3,13 @@ class ReceipesController < ApplicationController
 
   # GET /receipes or /receipes.json
   def index
-    @filter_form = ReceipeFilterForm.new(params:, receipe_class: GlobalReceipe)
+    @filter_form = ReceipeFilterForm.new(
+      params:,
+      receipe_class: GlobalReceipe,
+    )
     # Cache this
     @tags = GlobalReceipe.pluck(:tags).flatten.uniq
+    @pagy, @receipes = pagy(@filter_form.filtered_receipes)
   end
 
   # GET /receipes/1 or /receipes/1.json

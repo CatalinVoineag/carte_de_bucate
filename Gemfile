@@ -35,6 +35,10 @@ gem "govuk_design_system_formbuilder"
 gem "cssbundling-rails"
 gem "jsbundling-rails"
 
+gem "mission_control-jobs"
+
+gem "pagy"
+
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
 

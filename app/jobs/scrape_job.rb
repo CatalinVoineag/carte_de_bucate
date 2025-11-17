@@ -1,42 +1,56 @@
 require "open-uri"
 
-class ScraperOld
-  attr_reader :url
+class ScrapeJob < ApplicationJob
+  self.queue_adapter = :solid_queue
 
-  def initialize(url:)
-    @url = url
-  end
+  def perform(url:, which_page:)
+    browser = Ferrum::Browser.new
+    page = browser.create_page
+    page.go_to(url)
 
-  def self.call(url: nil)
-    urls = [
-      "https://www.bbc.co.uk/food/recipes/pretzels_71296",
-      "https://www.bbc.co.uk/food/recipes/basicpancakeswithsuga_66226",
-      "https://www.bbc.co.uk/food/recipes/creamy_gochujang_pasta_59347",
-      "https://www.bbc.co.uk/food/recipes/vegan_pulled_jackfruit_17371",
-      "https://www.bbc.co.uk/food/recipes/fragrant_noodle_bowl_22856",
-      "https://www.bbc.co.uk/food/recipes/freshpastadough_3067"
-    ]
-    urls = urls - Receipe.pluck(:url)
+    receipes = page.css("#az-recipes-#{which_page}-recipes > div > div")
 
-    urls.each do |url|
-      new(url:).call
+    return if receipes.blank?
+
+    counter = 0
+
+    while counter < receipes.count do
+      link = receipes[counter].css("a").first
+      image = receipes[counter].css("img").first
+
+      if image.nil?
+        counter += 1
+        next
+      end
+
+      page.go_to("https://www.bbc.co.uk#{link.attribute(:href)}")
+
+      if Receipe.where(url: page.url).any?
+        counter += 1
+        next
+      end
+
+      save_record(page)
+
+      page.back
+
+      counter += 1
+      receipes = page.css("#az-recipes-#{which_page}-recipes > div > div")
     end
+    browser.quit
   end
 
-  def call
+private
+
+  def save_record(page)
     attributes = { status: :published }
-    browser = Ferrum::Browser.new(browser_options: { "no-sandbox": nil })
-    browser.go_to(url)
-
-    attributes.merge!(name(browser))
-    attributes.merge!(info(browser))
-    attributes.merge!(description(browser))
-    attributes.merge!(instructions(browser))
-    attributes.merge!(url:)
-    image_url = browser.at_css("img")&.attribute("src")
-    receipe_ingredients = receipe_ingredients_attributes(browser)
-
-    browser.quit
+    attributes.merge!(name(page))
+    attributes.merge!(info(page))
+    attributes.merge!(description(page))
+    attributes.merge!(instructions(page))
+    attributes.merge!(url: page.url)
+    image_url = page.at_css("img")&.attribute("src")
+    receipe_ingredients = receipe_ingredients_attributes(page)
 
     ActiveRecord::Base.transaction do
       # there is logic to not duplicate the records in Receipe model
@@ -63,17 +77,15 @@ class ScraperOld
     end
   end
 
-  private
-
-  def name(browser)
+  def name(page)
     {
-      name: browser.at_css(".ssrcss-pbttu9-Heading").text
+      name: page.at_css(".ssrcss-pbttu9-Heading").text
     }
   end
 
-  def info(browser)
+  def info(page)
     result = {}
-    receipe_info = browser.at_css(".ssrcss-7o8aib-Wrapper")
+    receipe_info = page.at_css(".ssrcss-7o8aib-Wrapper")
     children = receipe_info.css(":scope > *")
 
     children.each_with_index.map do |child, index|
@@ -92,14 +104,14 @@ class ScraperOld
     result
   end
 
-  def description(browser)
-    description = browser.at_css("p[data-testid='recipe-description']").text
-    { description: }
+  def description(page)
+    description = page.at_css("p[data-testid='recipe-description']")&.text
+    { description: description.presence }
   end
 
-  def instructions(browser)
+  def instructions(page)
     result = { instructions_attributes: {} }
-    instructions = browser.at_css(".ssrcss-1o787j8-OrderedList")
+    instructions = page.at_css(".ssrcss-1o787j8-OrderedList")
     children = instructions.css(":scope > *")
 
     children.each_with_index.map do |child, index|
@@ -111,9 +123,9 @@ class ScraperOld
     result
   end
 
-  def receipe_ingredients_attributes(browser)
+  def receipe_ingredients_attributes(page)
     result = { receipe_ingredients_attributes: {} }
-    ingredient_element = browser.at_css(".ssrcss-5tl2t9-Wrapper")
+    ingredient_element = page.at_css(".ssrcss-5tl2t9-Wrapper")
     ingredients = ingredient_element.css(":scope > div > ul > li")
 
     ingredients.each_with_index do |ingredient_element, index|

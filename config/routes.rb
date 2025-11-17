@@ -1,8 +1,5 @@
 Rails.application.routes.draw do
-  namespace :saved_receipes do
-    get "start/new"
-    get "start/create"
-  end
+  mount MissionControl::Jobs::Engine, at: "/jobs"
   root "receipes#index"
   get "up" => "rails/health#show", as: :rails_health_check
 
