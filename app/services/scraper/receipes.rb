@@ -16,7 +16,7 @@ module Scraper
     end
 
     def call
-      browser = Ferrum::Browser.new(browser_options: { "no-sandbox": nil }, timeout: 30)
+      browser = Ferrum::Browser.new(browser_options: { "no-sandbox": nil }, process_timeout: 30)
 
       pages.each do |which_page|
         @url = "https://www.bbc.co.uk/food/recipes/a-z/#{which_page}/1#featured-content"
