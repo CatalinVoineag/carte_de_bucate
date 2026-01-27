@@ -17,20 +17,17 @@
           method: :get,
           scope: :filters,
           data: {
-            turbo_frame: "receipe-table",
-            controller: "auto-submit",
-            auto_submit_target: "form"
+            turbo_frame: "receipe-table"
           }
         ) do |form| %> 
           <div class="moj-filter__options">
             <div class="govuk-form-group filter-group">
               <%= form.govuk_text_field(
                 :receipe_name,
-                label: { text: "Search receipe" },
-                data: { auto_submit_target: "receipeInput" },
+                label: { text: "Search receipe" }
               ) %>
 
-              <div class="govuk-form-group filter-group" data-auto-submit-target="tagsInput">
+              <div class="govuk-form-group filter-group">
                 <%= form.govuk_collection_check_boxes(
                   :tags,
                   @tags,
@@ -44,9 +41,13 @@
               <%= form.govuk_text_area(
                 :ingredients,
                 label: { text: "Search by ingredients", hint: "Add a comma between ingredients" },
-                data: { auto_submit_target: "ingredientInput" },
                 rows: 5,
               ) %> 
+            </div>
+            
+            <div class="govuk-button-group">
+              <%= form.submit "Apply Filters", class: "govuk-button" %>
+              <%= link_to "Clear Filters", receipes_path(filters: { remove_filters: true }), class: "govuk-button govuk-button--secondary" %>
             </div>
           </div>
         <% end %> 

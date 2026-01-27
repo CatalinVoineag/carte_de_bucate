@@ -17,6 +17,7 @@ FactoryBot.define do
     name { 'Receipe name' }
     description { 'Description' }
     instructions { 'Instruction' }
+    tags { [] }
 
     after(:build) do |receipe|
       receipe.receipe_ingredients << build(:receipe_ingredient, receipe: receipe) if receipe.receipe_ingredients.blank?
@@ -31,5 +32,16 @@ FactoryBot.define do
         receipe.receipe_ingredients = build_list(:receipe_ingredient, evaluator.ingredients_count, receipe: receipe)
       end
     end
+  end
+
+  factory :global_receipe, class: "GlobalReceipe", parent: :receipe do
+    name { 'Global Receipe name' }
+    tags { [] }
+  end
+
+  factory :my_receipe, class: "MyReceipe", parent: :receipe do
+    name { 'My Receipe name' }
+    tags { [] }
+    association :user
   end
 end
