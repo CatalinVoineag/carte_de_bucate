@@ -3,6 +3,11 @@ class ReceipesController < ApplicationController
 
   # GET /receipes or /receipes.json
   def index
+    if params.dig(:filters, :remove_filters) == "true"
+      current_user.receipe_filter&.destroy
+      redirect_to receipes_path and return
+    end
+
     @filter_form = ReceipeFilterForm.new(
       params:,
       receipe_class: GlobalReceipe,

@@ -7,7 +7,7 @@ class ReceipeFilterForm
   def initialize(params:, receipe_class:)
     @filters = params.fetch(:filters, {})
     @receipe_class = receipe_class
-    @user = User.last
+    @user = User.last || User.new
 
     @receipe_name = @filters[:receipe_name] ||
       @user&.public_send(sti_methods[receipe_class.name][:filter])&.filters&.fetch("receipe_name", nil)
@@ -36,14 +36,16 @@ class ReceipeFilterForm
       )
     end
 
-    UserFilter.upsert(
-      {
-        user_id: user.id,
-        filters: sanitised_filters,
-        kind: sti_methods[receipe_class.name][:kind]
-      },
-      unique_by: [ :user_id, :kind ]
-    )
+    if user.present? && user.persisted?
+      UserFilter.upsert(
+        {
+          user_id: user.id,
+          filters: sanitised_filters,
+          kind: sti_methods[receipe_class.name][:kind]
+        },
+        unique_by: [ :user_id, :kind ]
+      )
+    end
 
     receipes.order(created_at: :desc)
   end
