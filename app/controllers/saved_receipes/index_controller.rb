@@ -3,7 +3,6 @@ module SavedReceipes
     before_action :set_receipe, only: %i[ show ]
 
     def index
-      # Handle clear filters
       if params.dig(:filters, :remove_filters) == "true"
         current_user.my_receipe_filter&.destroy
         redirect_to saved_receipes_path and return

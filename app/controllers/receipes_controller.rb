@@ -3,10 +3,8 @@ class ReceipesController < ApplicationController
 
   # GET /receipes or /receipes.json
   def index
-    # Handle clear filters
     if params.dig(:filters, :remove_filters) == "true"
-      user = User.last
-      user&.receipe_filter&.destroy
+      current_user.receipe_filter&.destroy
       redirect_to receipes_path and return
     end
 
