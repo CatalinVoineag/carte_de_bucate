@@ -4,7 +4,8 @@
   method:,
   data: {
     controller: 'nested-form',
-    nested_form_wrapper_selector_value: '.nested-form-wrapper'
+    nested_form_wrapper_selector_value: '.nested-form-wrapper',
+    nested_form_target: 'form'
   },
 ) do |form| %>
   <% if receipe.errors.any? %>
@@ -29,10 +30,20 @@
     <%= form.textarea :description %>
   </div>
 
-  <div>
-    <%= form.label :instructions, style: "display: block" %>
-    <%= form.textarea :instructions %>
-  </div>
+  <h2>Instructions</h2>
+  <template data-nested-form-target="template">
+    <%= form.fields_for :instructions, Instruction.new, child_index: 'NEW_RECORD' do |instruction_form| %>
+      <%= render "instruction", instruction_form: instruction_form %>
+    <% end %> 
+  </template>
+
+  <%= form.fields_for :instructions do |instruction_form| %>
+    <%= render "instruction", instruction_form: instruction_form %>
+  <% end %>
+
+  <div data-nested-form-target="target"></div>
+
+  <button type="button" data-action="nested-form#add">Add instruction</button>
 
   <h2>Ingredients</h2>
   <template data-nested-form-target="template">

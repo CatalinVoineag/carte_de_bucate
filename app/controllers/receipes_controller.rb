@@ -23,8 +23,9 @@ class ReceipesController < ApplicationController
 
   # GET /receipes/new
   def new
-    @receipe = GlobalReceipe.new
+    @receipe = GlobalReceipe.new(status: "draft")
     @receipe.receipe_ingredients.build.build_ingredient
+    @receipe.instructions.build if @receipe.instructions.blank?
   end
 
   # GET /receipes/1/edit
@@ -43,6 +44,7 @@ class ReceipesController < ApplicationController
         @receipe.receipe_ingredients.each do |receipe_ingredient|
           receipe_ingredient.build_ingredient if receipe_ingredient.ingredient.blank?
         end
+        @receipe.instructions.build if @receipe.instructions.blank?
 
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @receipe.errors, status: :unprocessable_entity }
@@ -85,13 +87,18 @@ class ReceipesController < ApplicationController
       receipe: [
         :name,
         :description,
-        :instructions,
+        :status,
         receipe_ingredients_attributes: [ [
           :id,
           :quantity,
-          :grams,
           :_destroy,
           ingredient_attributes: [ :id, :name ]
+        ] ],
+        instructions_attributes: [ [
+          :id,
+          :step,
+          :body,
+          :_destroy
         ] ]
       ],
     )
