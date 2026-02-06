@@ -4,10 +4,18 @@ class ReceipeIngredient < ApplicationRecord
   belongs_to :receipe
   belongs_to :ingredient
 
-  accepts_nested_attributes_for :ingredient, allow_destroy: true
+  accepts_nested_attributes_for :ingredient, allow_destroy: true, reject_if: :all_blank
 
   # validates :quantity, presence: true
   # there are recipes that don't have quantities
 
   delegate :name, to: :ingredient, prefix: true
+
+  def ingredient_attributes=(attributes)
+    if attributes["id"].present?
+      super
+    elsif attributes["name"].present?
+      self.ingredient = Ingredient.find_or_create_by(name: attributes["name"].strip.downcase)
+    end
+  end
 end

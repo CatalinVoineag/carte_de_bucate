@@ -3,7 +3,7 @@
     Instruction <span class="record-counter"></span>
   </h2>
 
-  <%= instruction_form.hidden_field :step, value: instruction_form.index %>
+  <%= instruction_form.hidden_field :step, value: instruction_form.object.step || instruction_form.index.to_i + 1 %>
 
   <%= instruction_form.govuk_text_area :body, label: { text: 'Description' }, rows: 5 %>
 

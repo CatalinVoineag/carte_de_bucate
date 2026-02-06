@@ -26,9 +26,4 @@ class Receipe < ApplicationRecord
                   }
 
   pg_search_scope :search_by_tags, against: :tags
-
-  def receipe_ingredients_attributes=(attrs)
-    # Temporarily disable this method to test if it's causing JavaScript issues
-    super
-  end
 end
