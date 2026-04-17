@@ -26,17 +26,4 @@ class Receipe < ApplicationRecord
                   }
 
   pg_search_scope :search_by_tags, against: :tags
-
-  def receipe_ingredients_attributes=(attrs)
-    attrs.each do |_, value|
-      ingredient = Ingredient.find_by(name: value.dig("ingredient_attributes", "name"))
-
-      if ingredient.present?
-        value["ingredient_id"] = ingredient.id
-        value.delete("ingredient_attributes")
-      end
-    end
-
-    super
-  end
 end

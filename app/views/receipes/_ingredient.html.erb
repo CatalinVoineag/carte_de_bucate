@@ -1,0 +1,29 @@
+<div class="nested-form-wrapper" data-new-record="<%= receipe_ingredient_form.object.new_record? %>">
+  <h3>
+    Ingredient <span class="record-counter"></span>
+  </h3>
+
+  <%= receipe_ingredient_form.hidden_field :id %> 
+
+  <%= receipe_ingredient_form.fields_for :ingredient do |ingredient_form| %>
+    <%= ingredient_form.hidden_field :id %> 
+
+    <div>
+      <%= ingredient_form.label :name, style: "display: block" %>
+      <%= ingredient_form.text_field :name %>
+    </div>
+  <% end %> 
+
+  <div>
+    <%= receipe_ingredient_form.label :quantity, style: "display: block" %>
+    <%= receipe_ingredient_form.number_field :quantity, step: "any" %>
+  </div>
+
+  
+
+  <% unless receipe_ingredient_form.index == 0 %>
+    <button type="button" data-action="nested-form#remove">Remove ingredient</button>
+  <% end %> 
+
+  <%= receipe_ingredient_form.hidden_field :_destroy %>
+</div>
