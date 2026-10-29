@@ -8,7 +8,7 @@ describe "Complete recipe creation flow", type: :feature, js: true do
     allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(user)
 
     # Visit the start page
-    visit start_saved_receipes_path
+    visit start_receipes_path
   end
 
   it "creates a complete recipe with image, 5 ingredients and 5 instructions" do
@@ -16,7 +16,7 @@ describe "Complete recipe creation flow", type: :feature, js: true do
     expect(page).to have_content("New receipe")
 
     # Upload image (create a test image file)
-    attach_file 'saved-receipes-start-form-image-field-input', Rails.root.join("tmp", "test_image.jpg"), make_visible: true
+    attach_file 'receipes-start-form-image-field-input', file_fixture("test_image.jpg"), make_visible: true
 
     fill_in "Name", with: "Test Recipe from Browser"
     fill_in "Prep time", with: "15 minutes"
@@ -45,7 +45,7 @@ describe "Complete recipe creation flow", type: :feature, js: true do
 
     ingredient_names.each_with_index do |name, i|
       # Click "Add ingredient" link (styled as button)
-      click_link "Add ingredient"
+      click_button "Add ingredient"
 
       # Wait a bit for JS to render
       sleep(0.3)
@@ -80,7 +80,7 @@ describe "Complete recipe creation flow", type: :feature, js: true do
     ]
 
     instructions.each_with_index do |instruction, i|
-      click_link "Add instruction"
+      click_button "Add instruction"
       sleep(0.3)
 
       new_wrapper = all('.nested-form-wrapper').last
@@ -92,18 +92,20 @@ describe "Complete recipe creation flow", type: :feature, js: true do
     # Click continue to finish
     click_button "Continue"
 
-    # Should redirect to saved recipes index
-    expect(page).to have_current_path(saved_receipes_path)
+    # Publishing lands on the receipe page
+    expect(page).to have_content("Receipe published")
     expect(page).to have_content("Test Recipe from Browser")
 
     # Verify the recipe was created correctly
-    recipe = MyReceipe.last
+    recipe = GlobalReceipe.last
     expect(recipe.name).to eq("Test Recipe from Browser")
     expect(recipe.prep_time).to eq("15 minutes")
     expect(recipe.cook_time).to eq("30 minutes")
     expect(recipe.servings).to eq("4")
     expect(recipe.description).to eq("This is a test recipe created through browser automation")
     expect(recipe.status).to eq("published")
+    expect(recipe.image).to be_attached
+    expect(recipe.author).to eq(user)
     expect(recipe.receipe_ingredients.count).to eq(5)
     expect(recipe.instructions.count).to eq(5)
 

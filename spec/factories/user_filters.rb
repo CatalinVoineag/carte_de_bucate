@@ -1,8 +1,8 @@
 FactoryBot.define do
   factory :user_filter do
-    user { nil }
-    kind { "MyString" }
-    filters { "" }
+    user
+    kind { "receipes" }
+    filters { {} }
     pagination_page { 1 }
   end
 end
