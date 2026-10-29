@@ -3,18 +3,26 @@ Rails.application.routes.draw do
   root "receipes#index"
   get "up" => "rails/health#show", as: :rails_health_check
 
-  resources :receipes
+  resources :receipes, only: %i[index show destroy] do
+    collection do
+      get "start", to: "receipes/start#new"
+      post "create", to: "receipes/start#create", as: :create
+    end
+
+    member do
+      get "edit", to: "receipes/start#edit"
+      put "update", to: "receipes/start#update", as: :update
+    end
+
+    resources :ingredients, only: %i[new create], controller: "receipes/ingredients"
+    resources :instructions, only: %i[new create], controller: "receipes/instructions"
+  end
+
   resources :save_receipes, only: [ :create, :destroy ]
 
   resources :saved_receipes, only: %i[index show], controller: "saved_receipes/index" do
-    collection do
-      get "start", to: "saved_receipes/start#new"
-      post "create", to: "saved_receipes/start#create", as: :create
-      get ":saved_receipe_id/edit", to: "saved_receipes/start#edit", as: :edit
-      put ":saved_receipe_id/update", to: "saved_receipes/start#update", as: :update
+    member do
+      delete :remove
     end
-
-    resources :ingredients, only: %i[new create], controller: "saved_receipes/ingredients"
-    resources :instructions, only: %i[new create], controller: "saved_receipes/instructions"
   end
 end

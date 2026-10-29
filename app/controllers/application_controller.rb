@@ -9,4 +9,12 @@ class ApplicationController < ActionController::Base
   def current_user
     @current_user ||= User.last
   end
+
+  private
+
+  def require_user
+    return if current_user.present?
+
+    render plain: "No user found. Run `bin/rails dev:seed` to create one.", status: :service_unavailable
+  end
 end

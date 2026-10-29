@@ -10,6 +10,8 @@ class Ingredient < ApplicationRecord
 
   has_one_attached :image
 
+  NAME_MAX = 100
+
   validates :name, presence: true
 
   normalizes :name, with: ->(value) { value.strip.downcase }

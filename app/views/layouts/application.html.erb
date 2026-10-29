@@ -30,6 +30,17 @@
     <%= render 'navigation' %> 
 
     <div class="govuk-width-container">
+      <% if notice.present? || alert.present? %>
+        <div class="govuk-!-margin-top-6">
+          <% if notice.present? %>
+            <%= govuk_notification_banner(title_text: "Success", text: notice, success: true) %>
+          <% end %>
+          <% if alert.present? %>
+            <%= govuk_notification_banner(title_text: "Important", text: alert, success: false) %>
+          <% end %>
+        </div>
+      <% end %>
+
       <%= yield %>
     </div>
   </body>

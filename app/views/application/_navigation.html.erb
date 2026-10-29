@@ -1,6 +1,6 @@
 <%= govuk_service_navigation(
   service_name: "Carte de bucate",
-  current_path: request.path,
+  current_path: controller_path.start_with?("saved_receipes") ? saved_receipes_path : receipes_path,
   navigation_items: [
     { text: "My receipes", href: saved_receipes_path },
     { text: "Receipes", href: receipes_path },

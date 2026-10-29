@@ -15,6 +15,9 @@
     <p class="govuk-body"><strong>Servings:</strong> <%= @my_receipe.servings %></p>
     <p class="govuk-body"><strong>Tags:</strong> <%= @my_receipe.tags&.join(", ") %></p>
 
+    <div id="save_receipe">
+      <%= button_to "Remove from my receipes", remove_saved_receipe_path(@my_receipe), method: :delete, class: "govuk-button govuk-button--secondary" %>
+    </div>
   </div>
 </div>
 

@@ -1,0 +1,34 @@
+<% content_for :title, "New receipe" %>
+<%= govuk_back_link href: new_receipe_ingredient_path(@receipe) %>
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds counter">
+    <span class="govuk-caption-l">Step 3 of 3</span>
+    <h1 class="govuk-heading-l">Instructions</h1>
+
+    <%= form_with(
+      model: @receipe,
+      url: receipe_instructions_path(@receipe),
+      method: :post,
+      data: { controller: 'nested-form', nested_form_wrapper_selector_value: '.nested-form-wrapper', nested_form_target: 'form' },
+    ) do |form| %>
+      <%= form.govuk_error_summary %>
+
+      <template data-nested-form-target="template">
+        <%= form.fields_for :instructions, Instruction.new, child_index: 'NEW_RECORD' do |instruction_form| %>
+          <%= render "instruction", instruction_form: %>
+        <% end %>
+      </template>
+
+      <%= form.fields_for :instructions do |instruction_form| %>
+        <%= render "instruction", instruction_form: %>
+      <% end %>
+
+      <div data-nested-form-target="target"></div>
+
+      <button type="button" class="govuk-button govuk-button--secondary" data-action="nested-form#add">Add instruction</button>
+
+      <%= form.govuk_submit "Continue" %>
+    <% end %>
+  </div>
+</div>

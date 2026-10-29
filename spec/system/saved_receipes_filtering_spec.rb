@@ -1,7 +1,10 @@
 require 'rails_helper'
 
 describe "Saved receipes filtering functionality", type: :feature, js: true do
+  let(:user) { create(:user) }
+
   before do
+    allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(user)
     visit saved_receipes_path
   end
 

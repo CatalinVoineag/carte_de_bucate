@@ -1,0 +1,11 @@
+<% content_for :title, "Edit receipe" %>
+<%= govuk_back_link href: receipe_path(@start_form.receipe) %>
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <span class="govuk-caption-l">Step 1 of 3</span>
+    <h1 class="govuk-heading-l">Edit receipe</h1>
+
+    <%= render "form", model: @start_form, url: update_receipe_path(@start_form.receipe), method: :put %>
+  </div>
+</div>

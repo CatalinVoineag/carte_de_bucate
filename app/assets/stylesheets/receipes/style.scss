@@ -1,8 +1,0 @@
-.counter {
-  counter-reset: section;
-}
-
-.record-counter::before {
-  counter-increment: section;
-  content: counter(section);
-}

@@ -1,0 +1,24 @@
+<%= form_with(model:, url:, method:) do |form| %>
+  <%= form.govuk_error_summary %>
+
+  <%= form.govuk_file_field(
+    :image,
+    label: { text: 'Image' },
+    hint: { text: 'JPG, PNG, WEBP or GIF, up to 5MB' },
+    javascript: true
+  ) %>
+
+  <%= form.govuk_text_field :name, label: { text: "Name" } %>
+
+  <%= form.govuk_text_field :prep_time, label: { text: "Prep time" } %>
+
+  <%= form.govuk_text_field :cook_time, label: { text: "Cook time" } %>
+
+  <%= form.govuk_text_field :servings, label: { text: "Servings" } %>
+
+  <%= form.govuk_text_field :tags, label: { text: "Tags (optional)" }, hint: { text: "Separate tags with commas, for example Vegetarian, Quick" } %>
+
+  <%= form.govuk_text_area :description, label: { text: 'Description' }, rows: 7 %>
+
+  <%= form.govuk_submit "Continue" %>
+<% end %>

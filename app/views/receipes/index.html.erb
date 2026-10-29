@@ -1,5 +1,24 @@
-<p style="color: green"><%= notice %></p>
 <% content_for :title, "Receipes" %>
+
+<%= govuk_button_link_to "Create new receipe", start_receipes_path, class: "govuk-!-margin-top-4 govuk-!-margin-bottom-6" %>
+
+<% if @drafts.any? %>
+  <h2 class="govuk-heading-m">Drafts</h2>
+
+  <%= govuk_summary_list(actions: true, classes: "govuk-!-margin-bottom-8") do |list| %>
+    <% @drafts.each do |draft| %>
+      <%= list.with_row do |row| %>
+        <% row.with_key { draft.name.presence || "Untitled draft" } %>
+        <% row.with_value do %>
+          <strong class="govuk-tag govuk-tag--grey">Draft</strong>
+          <span class="govuk-body-s govuk-!-margin-left-2">Last edited <%= draft.updated_at.to_fs(:long) %></span>
+        <% end %>
+        <% row.with_action(text: "Continue", href: edit_receipe_path(draft)) %>
+        <% row.with_action(text: "Delete", href: receipe_path(draft), visually_hidden_text: draft.name.presence || "draft", html_attributes: { data: { turbo_method: :delete, turbo_confirm: "Delete this draft? This cannot be undone." } }) %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>
 
 <div class="govuk-grid-row">
   <div class="moj-filter-layout__filter app-filter govuk-grid-column-one-third govuk-!-margin-bottom-6">
