@@ -1,55 +1,55 @@
-module SavedReceipes
+module Receipes
   class StartController < ApplicationController
-    before_action :my_receipe, only: %i[edit update]
+    before_action :require_user
+
     def new
       @start_form = StartForm.new
     end
 
     def create
-      @start_form = StartForm.new(current_user.my_receipes.new)
+      @start_form = StartForm.new(GlobalReceipe.new(status: "draft", author: current_user))
       @start_form.assign_attributes(start_form_params)
 
-      if my_receipe = @start_form.save
-        redirect_to new_saved_receipe_ingredient_path(my_receipe)
+      if (receipe = @start_form.save)
+        redirect_to new_receipe_ingredient_path(receipe)
       else
         render :new, status: :unprocessable_entity
       end
     end
 
     def edit
-      @start_form = StartForm.new(my_receipe)
+      @start_form = StartForm.new(receipe)
     end
 
     def update
-      @start_form = StartForm.new(my_receipe)
+      @start_form = StartForm.new(receipe)
       @start_form.assign_attributes(start_form_params)
 
       if @start_form.save
-        redirect_to new_saved_receipe_ingredient_path(my_receipe)
+        redirect_to new_receipe_ingredient_path(receipe)
       else
         render :edit, status: :unprocessable_entity
       end
     end
 
-  private
+    private
 
-    def my_receipe
-      @my_receipe ||= MyReceipe.find(params.require(:saved_receipe_id))
+    def receipe
+      @receipe ||= GlobalReceipe.find(params.expect(:id))
     end
 
     def start_form_params
       params.expect(
-        saved_receipes_start_form: [
+        receipes_start_form: [
           :image,
           :name,
           :prep_time,
           :cook_time,
           :servings,
-          :description
+          :description,
+          :tags
         ]
-      ).merge(
-        status: "draft",
-      ).compact_blank
+      )
     end
   end
 end

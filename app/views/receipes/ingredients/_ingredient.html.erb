@@ -1,0 +1,23 @@
+<div class="nested-form-wrapper" data-new-record="<%= receipe_ingredient_form.object.new_record? %>">
+  <h2 class="govuk-heading-m">
+    Ingredient <span class="record-counter"></span>
+  </h2>
+
+  <%= receipe_ingredient_form.hidden_field :id %>
+
+  <%= receipe_ingredient_form.fields_for :ingredient, (receipe_ingredient_form.object.ingredient || Ingredient.new), include_id: false do |ingredient_form| %>
+    <%= ingredient_form.govuk_text_field :name, label: { text: "Name" }, hint: { text: "New ingredients are added automatically" } %>
+  <% end %>
+
+  <%= receipe_ingredient_form.govuk_text_field :quantity, label: { text: "Quantity" }, width: 10, hint: { text: "For example 200, 1/2 or 2-3" } %>
+
+  <%= receipe_ingredient_form.govuk_text_field :unit, label: { text: "Unit" }, width: 10 %>
+
+  <%= receipe_ingredient_form.govuk_text_field :notes, label: { text: "Notes" } %>
+
+  <% unless receipe_ingredient_form.index == 0 %>
+    <button type="button" class="govuk-button govuk-button--secondary" data-action="nested-form#remove">Remove ingredient</button>
+  <% end %>
+
+  <%= receipe_ingredient_form.hidden_field :_destroy %>
+</div>

@@ -1,19 +1,22 @@
 class ReceipesController < ApplicationController
-  before_action :set_receipe, only: %i[ show edit update destroy ]
+  before_action :set_receipe, only: %i[show destroy]
+  before_action :require_user, only: %i[destroy]
 
   # GET /receipes or /receipes.json
   def index
     if params.dig(:filters, :remove_filters) == "true"
-      current_user.receipe_filter&.destroy
+      current_user&.receipe_filter&.destroy
       redirect_to receipes_path and return
     end
 
     @filter_form = ReceipeFilterForm.new(
       params:,
       receipe_class: GlobalReceipe,
+      user: current_user,
     )
     # Cache this
-    @tags = GlobalReceipe.pluck(:tags).flatten.uniq
+    @tags = GlobalReceipe.pluck(:tags).flatten.compact_blank.uniq
+    @drafts = current_user ? GlobalReceipe.draft.where(user_id: current_user.id).order(updated_at: :desc) : GlobalReceipe.none
     @pagy, @receipes = pagy(@filter_form.filtered_receipes)
   end
 
@@ -21,86 +24,19 @@ class ReceipesController < ApplicationController
   def show
   end
 
-  # GET /receipes/new
-  def new
-    @receipe = GlobalReceipe.new(status: "draft")
-    @receipe.receipe_ingredients.build.build_ingredient
-    @receipe.instructions.build if @receipe.instructions.blank?
-  end
-
-  # GET /receipes/1/edit
-  def edit
-  end
-
-  # POST /receipes or /receipes.json
-  def create
-    @receipe = GlobalReceipe.new(receipe_params)
-
-    respond_to do |format|
-      if @receipe.save
-        format.html { redirect_to receipe_path(@receipe), notice: "Receipe was successfully created." }
-        format.json { render :show, status: :created, location: @receipe }
-      else
-        @receipe.receipe_ingredients.each do |receipe_ingredient|
-          receipe_ingredient.build_ingredient if receipe_ingredient.ingredient.blank?
-        end
-        @receipe.instructions.build if @receipe.instructions.blank?
-
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @receipe.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # PATCH/PUT /receipes/1 or /receipes/1.json
-  def update
-    respond_to do |format|
-      if @receipe.update(receipe_params)
-        format.html { redirect_to receipe_path(@receipe), notice: "Receipe was successfully updated.", status: :see_other }
-        format.json { render :show, status: :ok, location: @receipe }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @receipe.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
   # DELETE /receipes/1 or /receipes/1.json
   def destroy
-    @receipe.destroy!
+    ReceipeService::DestroyReceipe.call(receipe: @receipe)
 
     respond_to do |format|
-      format.html { redirect_to receipes_path, notice: "Receipe was successfully destroyed.", status: :see_other }
+      format.html { redirect_to receipes_path, notice: "Receipe deleted", status: :see_other }
       format.json { head :no_content }
     end
   end
 
   private
-  # Use callbacks to share common setup or constraints between actions.
+
   def set_receipe
     @receipe = GlobalReceipe.find(params.expect(:id))
-  end
-
-  # Only allow a list of trusted parameters through.
-  def receipe_params
-    params.expect(
-      receipe: [
-        :name,
-        :description,
-        :status,
-        receipe_ingredients_attributes: [ [
-          :id,
-          :quantity,
-          :_destroy,
-          ingredient_attributes: [ :id, :name ]
-        ] ],
-        instructions_attributes: [ [
-          :id,
-          :step,
-          :body,
-          :_destroy
-        ] ]
-      ],
-    )
   end
 end

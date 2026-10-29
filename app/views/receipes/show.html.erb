@@ -50,10 +50,13 @@
     <% end %>
   </div>
 
-  <br>
-  <br>
-  <%= link_to "Edit this receipe", edit_receipe_path(@receipe) %> |
-  <%= link_to "Back to receipes", receipes_path %>
+  <div class="govuk-grid-column-full">
+    <% if @receipe.draft? %>
+      <p class="govuk-body"><strong class="govuk-tag govuk-tag--grey">Draft</strong> This receipe is not in the Receipes list yet.</p>
+    <% end %>
 
-  <%= button_to "Destroy this receipe", receipe_path(@receipe), method: :delete %>
+    <%= govuk_button_link_to "Edit receipe", edit_receipe_path(@receipe), secondary: true %>
+    <%= button_to "Delete receipe", receipe_path(@receipe), method: :delete, class: "govuk-button govuk-button--warning", form: { data: { turbo_confirm: "Delete this receipe? It will also be removed from everyone's My receipes. This cannot be undone." } } %>
+
+  </div>
 </div>

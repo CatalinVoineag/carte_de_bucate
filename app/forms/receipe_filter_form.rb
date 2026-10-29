@@ -1,13 +1,14 @@
 class ReceipeFilterForm
   include ActiveModel::Model
 
-  attr_reader :filters, :receipe_class, :user
+  attr_reader :filters, :receipe_class, :user, :base_scope
   attr_accessor :receipe_name, :ingredients, :tags
 
-  def initialize(params:, receipe_class:)
+  def initialize(params:, receipe_class:, user:, base_scope: nil)
     @filters = params.fetch(:filters, {})
     @receipe_class = receipe_class
-    @user = User.last || User.new
+    @base_scope = base_scope
+    @user = user
 
     @receipe_name = @filters[:receipe_name] ||
       @user&.public_send(sti_methods[receipe_class.name][:filter])&.filters&.fetch("receipe_name", nil)
@@ -18,7 +19,7 @@ class ReceipeFilterForm
   end
 
   def filtered_receipes
-    receipes = receipe_class.published.all
+    receipes = base_scope || receipe_class.published
 
     if receipe_name.present?
       receipes = receipes.search_by_name(receipe_name)
