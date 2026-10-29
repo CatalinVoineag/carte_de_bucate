@@ -22,7 +22,6 @@ module SavedReceipes
 
     def show; end
 
-    # Takes the copy off this user's list. The receipe in the Receipes tab stays.
     def remove
       @my_receipe.destroy!
 

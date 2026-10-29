@@ -228,7 +228,6 @@ class DevSeeder
     }
   ].freeze
 
-  # Receipes the cook has created: published ones are copied into the public list
   OWN_RECEIPES = [
     {
       name: "Grandma's lentil soup",
@@ -328,7 +327,6 @@ class DevSeeder
     end
   end
 
-  # Receipes the cook created in the Receipes tab. Published ones are also saved to the cook's My receipes.
   def seed_own_receipes(cook)
     OWN_RECEIPES.each_with_index do |data, index|
       receipe = GlobalReceipe.find_or_initialize_by(name: data[:name], user_id: cook.id)

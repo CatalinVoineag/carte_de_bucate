@@ -1,5 +1,4 @@
 module Receipes
-  # Step 1 of creating or editing a receipe in the Receipes tab: image, details and tags.
   class StartForm
     include ActiveModel::Model
 
@@ -25,7 +24,6 @@ module Receipes
       @tags = receipe&.tags&.join(", ")
     end
 
-    # Returns the saved GlobalReceipe, or false with errors copied onto this form.
     def save
       return false unless valid?
 

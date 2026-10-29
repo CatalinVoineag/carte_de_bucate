@@ -1,5 +1,4 @@
 module ReceipeService
-  # Makes every My receipes copy of a receipe match the receipe in the Receipes tab.
   class SyncCopies
     attr_reader :receipe
 

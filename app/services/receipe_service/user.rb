@@ -1,5 +1,4 @@
 module ReceipeService
-  # Saves a published receipe from the Receipes tab to a user's My receipes, or removes that copy again.
   class User
     attr_reader :receipe, :user
 

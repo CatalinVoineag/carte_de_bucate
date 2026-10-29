@@ -1,7 +1,6 @@
 # A receipe in the Receipes tab. Scraped ones have no author; receipes created in the app are authored by their creator.
 class GlobalReceipe < Receipe
   belongs_to :author, class_name: "User", foreign_key: :user_id, optional: true
-  # Deleting a receipe from the Receipes tab removes it from everyone's My receipes
   has_many :saved_copies, class_name: "MyReceipe", foreign_key: :global_receipe_id, dependent: :destroy, inverse_of: :global_receipe
 
   validates :description, :prep_time, :cook_time, :servings, presence: true, on: :publish
